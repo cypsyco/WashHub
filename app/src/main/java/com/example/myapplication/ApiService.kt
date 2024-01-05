@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ApiService {
@@ -10,6 +11,9 @@ interface ApiService {
 
     @POST("/login")
     fun loginUser(@Body userData: User): Call<ApiResponse>
+
+    @GET("/washers")
+    fun getWashers(): Call<List<Washer>>
 }
 
 data class User(val username: String, val pw: String)
