@@ -31,7 +31,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnRegister.setOnClickListener {
-            registerUser()
+            val intent = Intent(this@MainActivity, RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -50,26 +52,6 @@ class MainActivity : AppCompatActivity() {
 
                     } else {
                         Toast.makeText(this@MainActivity, "Login Failed", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                    Toast.makeText(this@MainActivity, t.message, Toast.LENGTH_SHORT).show()
-                }
-            })
-    }
-
-    private fun registerUser() {
-        val username = etUsername.text.toString().trim()
-        val password = etPassword.text.toString().trim()
-
-        RetrofitClient.instance.registerUser(User(username, password))
-            .enqueue(object : Callback<ApiResponse> {
-                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                    if (response.isSuccessful && response.body()?.message == true) {
-                        Toast.makeText(this@MainActivity, "Registration Successful", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(this@MainActivity, "Registration Failed", Toast.LENGTH_SHORT).show()
                     }
                 }
 
