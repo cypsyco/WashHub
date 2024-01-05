@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter<WasherAdapter.WasherViewHolder>() {
 
     class WasherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val washerName: TextView = itemView.findViewById(R.id.txtWasherName)
+        val washername: TextView = itemView.findViewById(R.id.txtWasherName)
         val btnAction: Button = itemView.findViewById(R.id.btnAction)
     }
 
@@ -21,9 +21,9 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
 
     override fun onBindViewHolder(holder: WasherViewHolder, position: Int) {
         val currentWasher = washerList[position]
-        holder.washerName.text = currentWasher.washerName
+        holder.washername.text = currentWasher.washername
 
-        holder.btnAction.text = when (currentWasher.washerState) {
+        holder.btnAction.text = when (currentWasher.washerstatus) {
             "USED" -> "Used"
             "AVAILABLE" -> "Available"
             else -> "Broken"
