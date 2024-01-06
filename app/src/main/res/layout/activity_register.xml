@@ -14,10 +14,16 @@
         android:src="@mipmap/ic_launcher"/>
 
     <EditText
-        android:id="@+id/editTextName"
+        android:id="@+id/editTextRealName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Name"/>
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="ID"/>
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -25,6 +31,12 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:hint="Password"/>
+
+    <EditText
+        android:id="@+id/editTextDormitory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Dormitory"/>
 
     <Button
         android:id="@+id/buttonRegister"

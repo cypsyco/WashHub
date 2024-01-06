@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         val username = etUsername.text.toString().trim()
         val password = etPassword.text.toString().trim()
 
-        RetrofitClient.instance.loginUser(User(username, password))
+        RetrofitClient.instance.loginUser(User(username, password, ""))
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.message == true) {
