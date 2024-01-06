@@ -16,6 +16,7 @@ import android.widget.Spinner
 import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var etUsername: EditText
     private lateinit var etID: EditText
     private lateinit var etPassword: EditText
-    private lateinit var sGender: Switch
+    private lateinit var sGender: SwitchCompat
     private lateinit var sDormitory: Spinner // 기숙사 정보를 위한 EditText 추가
 
     var gender = "남자"
@@ -62,19 +63,24 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
 
+        var dropDownRes = emptyArray<String>()
         sGender.setOnCheckedChangeListener{CompoundButton, onSwitch ->
             if (onSwitch){
                 gender = "남자"
+
+                val newAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, maleDorms)
+                newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                sDormitory.adapter = newAdapter
             }else{
                 gender = "여자"
+
+                val newAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, femaleDorms)
+                newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                sDormitory.adapter = newAdapter
             }
             Log.d("gender",gender)
         }
 
-        val dropDownRes = if (gender=="남자") maleDorms else femaleDorms
-        val newAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, dropDownRes)
-        newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        sDormitory.adapter = newAdapter
 
         sDormitory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
