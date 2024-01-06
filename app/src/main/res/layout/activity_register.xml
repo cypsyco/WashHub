@@ -1,35 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/backbutton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#00ff0000"
+            android:src="@drawable/baseline_arrow_back_ios_24"/>
 
-    <ImageView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:text="회원가입"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_gravity="center"
-        android:src="@mipmap/ic_launcher"/>
+        android:layout_weight="1"
+        android:scaleType="centerCrop"
+        app:civ_fill_color="@color/blue"
+        android:src="@drawable/baseline_person_24"
+        android:tint="@color/grey"/>
 
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Name"/>
+    <FrameLayout
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center">
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:hint="이름"/>
+        <View
+            android:layout_width="250dp"
+            android:layout_height="0.8dp"
+            android:background="@color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"/>
+    </FrameLayout>
 
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="Password"/>
+
+    <FrameLayout
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center">
+
+        <EditText
+            android:id="@+id/editTextID"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:layout_gravity="left"
+            android:background="@null"
+            android:hint="ID" />
+
+        <Button
+            android:id="@+id/idCheckBtn"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:backgroundTint="#00ff0000"
+            android:padding="0dp"
+            android:text="중복확인"
+            android:textColor="@color/black"/>
+        <View
+            android:layout_width="250dp"
+            android:layout_height="0.8dp"
+            android:background="@color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center">
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:inputType="textPassword"
+            android:hint="Password"/>
+        <ImageButton
+            android:id="@+id/showbutton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:background="#00ff0000"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:src="@drawable/hide"/>
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="0.8dp"
+            android:background="@color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"/>
+    </FrameLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="10dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="성별"
+            android:textSize="15sp"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/genderSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:checked="true"
+            android:textColor="@color/white"
+            android:thumb="@drawable/thumb_selector"
+            app:track="@drawable/track_selector" />
+    </LinearLayout>
+
+    <Spinner
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        />
 
     <Button
         android:id="@+id/buttonRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
         android:text="Register"
-        android:layout_gravity="center"/>
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/blue"
+        android:padding="0dp"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="70dp"/>
+
 </LinearLayout>
