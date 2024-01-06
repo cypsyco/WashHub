@@ -30,6 +30,10 @@
         android:layout_height="2dp"
         android:background="@color/black"/>
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
         android:layout_width="200dp"
@@ -138,7 +142,7 @@
             android:textSize="15sp"/>
 
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/genderSwitch"
+            android:id="@+id/switchGender"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:checked="true"
@@ -148,6 +152,7 @@
     </LinearLayout>
 
     <Spinner
+        android:id="@+id/spinnerDorm"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_gravity="center"

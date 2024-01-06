@@ -1,11 +1,19 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Spinner
+import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Call
@@ -14,19 +22,35 @@ import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var etUserid: EditText
-    private lateinit var etPassword: EditText
-    private lateinit var etUsername: EditText // 기숙사 정보를 위한 EditText 추가
     private lateinit var imageView: ImageView
+    private lateinit var etUsername: EditText
+    private lateinit var etID: EditText
+    private lateinit var etPassword: EditText
+    private lateinit var sGender: Switch
+    private lateinit var sDormitory: Spinner // 기숙사 정보를 위한 EditText 추가
 
+    var gender = "남자"
+    var dorm = "사랑관"
+
+    val maleDorms = arrayOf("사랑관", "소망관")
+    val femaleDorms = arrayOf("아름관", "나래관")
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        etUsername= findViewById(R.id.editTextName)
-        etUserid = findViewById(R.id.editTextID)
-        etPassword = findViewById(R.id.editTextPassword)
         imageView = findViewById(R.id.imageView)
+        etUsername = findViewById(R.id.editTextName)
+        etID = findViewById(R.id.editTextID)
+        etPassword = findViewById(R.id.editTextPassword)
+        sGender = findViewById(R.id.switchGender)
+        sDormitory = findViewById(R.id.spinnerDorm)
+
+
+        imageView.setOnClickListener {
+            openGalleryForImage()
+        }
 
         val buttonRegister = findViewById<Button>(R.id.buttonRegister)
         buttonRegister.setOnClickListener {
@@ -38,9 +62,38 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
 
-        imageView.setOnClickListener {
-            openGalleryForImage()
+        sGender.setOnCheckedChangeListener{CompoundButton, onSwitch ->
+            if (onSwitch){
+                gender = "남자"
+            }else{
+                gender = "여자"
+            }
+            Log.d("gender",gender)
         }
+
+        val dropDownRes = if (gender=="남자") maleDorms else femaleDorms
+        val newAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, dropDownRes)
+        newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        sDormitory.adapter = newAdapter
+
+        sDormitory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedItem = parent?.getItemAtPosition(position).toString()
+                dorm = selectedItem
+                // 선택된 아이템으로 원하는 작업을 수행합니다.
+                Log.d("Selected item", selectedItem)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // 아무것도 선택되지 않았을 때 수행할 작업을 여기에 구현할 수 있습니다.
+            }
+        }
+
     }
 
     private fun openGalleryForImage() {
@@ -59,11 +112,11 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerUser() {
-        val userid = etUserid.text.toString().trim()
+        val username = etUsername.text.toString().trim()
         val password = etPassword.text.toString().trim()
-        val dormitory = etUsername.text.toString().trim()
+        val dormitory = dorm
 
-        RetrofitClient.instance.registerUser(User(userid, password, dormitory))
+        RetrofitClient.instance.registerUser(User(username, password, dormitory))
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.message == true) {
