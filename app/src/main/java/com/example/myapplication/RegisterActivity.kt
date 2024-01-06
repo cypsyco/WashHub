@@ -14,18 +14,18 @@ import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var etUsername: EditText
+    private lateinit var etUserid: EditText
     private lateinit var etPassword: EditText
-    private lateinit var etDormitory: EditText // 기숙사 정보를 위한 EditText 추가
+    private lateinit var etUsername: EditText // 기숙사 정보를 위한 EditText 추가
     private lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        etUsername = findViewById(R.id.editTextName)
+        etUsername= findViewById(R.id.editTextName)
+        etUserid = findViewById(R.id.editTextID)
         etPassword = findViewById(R.id.editTextPassword)
-        etDormitory = findViewById(R.id.editTextDormitory)
         imageView = findViewById(R.id.imageView)
 
         val buttonRegister = findViewById<Button>(R.id.buttonRegister)
@@ -59,11 +59,11 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerUser() {
-        val username = etUsername.text.toString().trim()
+        val userid = etUserid.text.toString().trim()
         val password = etPassword.text.toString().trim()
-        val dormitory = etDormitory.text.toString().trim()
+        val dormitory = etUsername.text.toString().trim()
 
-        RetrofitClient.instance.registerUser(User(username, password, dormitory))
+        RetrofitClient.instance.registerUser(User(userid, password, dormitory))
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.message == true) {

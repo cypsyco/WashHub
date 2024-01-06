@@ -6,10 +6,10 @@
 
     <!-- 사용자 이름 입력 필드 -->
     <EditText
-        android:id="@+id/etUsername"
+        android:id="@+id/etUserid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"
+        android:hint="Userid"
         android:inputType="textEmailAddress" />
 
     <!-- 비밀번호 입력 필드 -->
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:hint="Password"
         android:inputType="textPassword"
-        android:layout_below="@id/etUsername"
+        android:layout_below="@id/etUserid"
         android:layout_marginTop="16dp"/>
 
     <!-- 로그인 버튼 -->

@@ -25,7 +25,7 @@ interface ApiService {
 
 }
 
-data class User(val username: String, val pw: String, val dormitory: String)
+data class User(val userid: String, val pw: String, val dormitory: String)
 data class ApiResponse(val message: Boolean, val UID: Int = -1)
 
 data class Washer(

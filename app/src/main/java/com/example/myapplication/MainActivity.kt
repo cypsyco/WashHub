@@ -12,7 +12,7 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var etUsername: EditText
+    private lateinit var etUserid: EditText
     private lateinit var etPassword: EditText
     private lateinit var btnLogin: Button
     private lateinit var btnRegister: Button
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        etUsername = findViewById(R.id.etUsername)
+        etUserid = findViewById(R.id.etUserid)
         etPassword = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
         btnRegister = findViewById(R.id.btnRegister)
@@ -38,10 +38,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loginUser() {
-        val username = etUsername.text.toString().trim()
+        val userid = etUserid.text.toString().trim()
         val password = etPassword.text.toString().trim()
 
-        RetrofitClient.instance.loginUser(User(username, password, ""))
+        RetrofitClient.instance.loginUser(User(userid, password, ""))
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.message == true) {
