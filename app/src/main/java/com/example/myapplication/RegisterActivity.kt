@@ -5,16 +5,19 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Switch
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import retrofit2.Call
@@ -23,6 +26,7 @@ import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
 
+    private lateinit var backbtn: ImageButton
     private lateinit var imageView: ImageView
     private lateinit var etUsername: EditText
     private lateinit var etID: EditText
@@ -41,6 +45,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        backbtn = findViewById(R.id.backbutton)
         imageView = findViewById(R.id.imageView)
         etUsername = findViewById(R.id.editTextName)
         etID = findViewById(R.id.editTextID)
@@ -48,6 +53,9 @@ class RegisterActivity : AppCompatActivity() {
         sGender = findViewById(R.id.switchGender)
         sDormitory = findViewById(R.id.spinnerDorm)
 
+        backbtn.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
         imageView.setOnClickListener {
             openGalleryForImage()
@@ -63,7 +71,10 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
 
-        var dropDownRes = emptyArray<String>()
+        val newAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, maleDorms)
+        newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        sDormitory.adapter = newAdapter
+
         sGender.setOnCheckedChangeListener{CompoundButton, onSwitch ->
             if (onSwitch){
                 gender = "남자"
@@ -80,7 +91,6 @@ class RegisterActivity : AppCompatActivity() {
             }
             Log.d("gender",gender)
         }
-
 
         sDormitory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -100,6 +110,16 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish() // 현재 액티비티를 종료하여 뒤로가기와 동일한 효과
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun openGalleryForImage() {
