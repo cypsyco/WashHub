@@ -20,8 +20,8 @@ interface ApiService {
     @POST("/washerstatus/{id}")
     fun updateWasherStatus(
         @Path("id") id: Int,
-        @Body TimeSet: TimeSet
-    ): Call<String>
+        @Body timeSet: TimeSet
+    ): Call<WasherStatusResponse>
 
 }
 
@@ -40,3 +40,5 @@ data class TimeSet(
     val starttime: Long,
     val settime: Long
 )
+
+data class WasherStatusResponse(val washerstatus: String)

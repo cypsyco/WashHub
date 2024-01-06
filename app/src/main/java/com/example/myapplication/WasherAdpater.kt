@@ -76,27 +76,32 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
         }
 
         holder.btnAction.setOnClickListener {
-            Log.d("Button Clicked",currentWasher.id.toString())
+            Log.d("Button Clicked", currentWasher.id.toString())
             val startTime = System.currentTimeMillis()
             val setTime = 3600000L
-            val call = RetrofitClient.instance.updateWasherStatus(currentWasher.id, TimeSet(startTime,setTime))
-            call.enqueue(object : Callback<String> {
+            val call = RetrofitClient.instance.updateWasherStatus(currentWasher.id, TimeSet(startTime, setTime))
+            call.enqueue(object : Callback<WasherStatusResponse> {
                 override fun onResponse(
-                    call: Call<String>, response: Response<String>
-                ){
-                    Log.d("Button Clicked", response.toString())
+                    call: Call<WasherStatusResponse>,
+                    response: Response<WasherStatusResponse>
+                ) {
                     if(response.isSuccessful){
-                        Log.d("Button Clicked2", response.toString())
-                        if (response.body()=="{ washerstatus: 'AVAILABLE' }"){
-                            Toast.makeText(holder.btnAction.context, "${currentWasher.washername} 사용을 시작합니다.", Toast.LENGTH_SHORT).show()
-                        } else if (response.body()=="REPAIR"){
-                            Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 수리중입니다.", Toast.LENGTH_SHORT).show()
-                        } else if (response.body()=="USED"){
-                            Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 다른 사람이 사용중입니다.", Toast.LENGTH_SHORT).show()
+                        val responseBody = response.body()
+                        responseBody?.let {
+                            // Handle different washer status
+                            when (it.washerstatus) {
+                                "AVAILABLE" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername} 사용을 시작합니다.", Toast.LENGTH_SHORT).show()
+                                "REPAIR" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 수리중입니다.", Toast.LENGTH_SHORT).show()
+                                "USED" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 다른 사람이 사용중입니다.", Toast.LENGTH_SHORT).show()
+                                // Additional cases as needed
+                            }
                         }
+                    } else {
+                        Log.e("UpdateWasher", "Response not successful: ${response.errorBody()?.string()}")
                     }
                 }
-                override fun onFailure(call: Call<String>, t: Throwable) {
+
+                override fun onFailure(call: Call<WasherStatusResponse>, t: Throwable) {
                     Log.e("UpdateWasher", "Failed: ${t.message}")
                 }
             })
