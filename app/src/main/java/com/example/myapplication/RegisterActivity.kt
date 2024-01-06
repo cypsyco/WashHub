@@ -31,7 +31,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var etUsername: EditText
     private lateinit var etID: EditText
     private lateinit var etPassword: EditText
-    private lateinit var sGender: SwitchCompat
+    private lateinit var sGender: Switch
     private lateinit var sDormitory: Spinner // 기숙사 정보를 위한 EditText 추가
 
     var gender = "남자"
