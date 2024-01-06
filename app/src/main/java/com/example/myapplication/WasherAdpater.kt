@@ -9,10 +9,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.LocalDateTime
 
 class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter<WasherAdapter.WasherViewHolder>() {
@@ -34,28 +38,33 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
         val currentWasher = washerList[position]
         holder.washername.text = currentWasher.washername
 
-        val startTime: Long = System.currentTimeMillis()
-        val setTime = 3600000L
-
-        val remainingTime = startTime + setTime - System.currentTimeMillis()
+//        val startTime: Long = System.currentTimeMillis()
+//        val setTime = 3600000L
 
         holder.btnAction.text = currentWasher.washerstatus
 
-        holder.mTimer = object : CountDownTimer(remainingTime, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val hours = millisUntilFinished / (1000 * 60 * 60)
-                val minutes = (millisUntilFinished % (1000 * 60 * 60)) / (1000 * 60)
-                val seconds = (millisUntilFinished % (1000 * 60)) / 1000
+        if (currentWasher.washerstatus == "USED"){
+            val remainingTime = currentWasher.starttime + currentWasher.settime - System.currentTimeMillis()
 
-                val timeLeftFormatted = String.format("%02d:%02d:%02d", hours, minutes, seconds)
-                holder.remainingTime.text = timeLeftFormatted
-            }
+            holder.mTimer = object : CountDownTimer(remainingTime, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    val hours = millisUntilFinished / (1000 * 60 * 60)
+                    val minutes = (millisUntilFinished % (1000 * 60 * 60)) / (1000 * 60)
+                    val seconds = (millisUntilFinished % (1000 * 60)) / 1000
 
-            override fun onFinish() {
-                holder.remainingTime.text = "done"
+                    val timeLeftFormatted = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                    holder.remainingTime.text = timeLeftFormatted
+                }
+
+                override fun onFinish() {
+                    holder.remainingTime.text = ""
+                }
             }
+            holder.mTimer.start()
+        }else{
+            holder.remainingTime.text = ""
         }
-        holder.mTimer.start()
+
 
 
         if (currentWasher.washerstatus.trim() != "AVAILABLE"){
@@ -67,8 +76,30 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
         }
 
         holder.btnAction.setOnClickListener {
-            // 여기에 버튼 클릭 시 동작을 정의합니다.
-            // 예를 들어, 해당 Dryer에 대한 작업을 실행하거나 특정 기능을 수행할 수 있습니다.
+            Log.d("Button Clicked",currentWasher.id.toString())
+            val startTime = System.currentTimeMillis()
+            val setTime = 3600000L
+            val call = RetrofitClient.instance.updateWasherStatus(currentWasher.id, TimeSet(startTime,setTime))
+            call.enqueue(object : Callback<String> {
+                override fun onResponse(
+                    call: Call<String>, response: Response<String>
+                ){
+                    Log.d("Button Clicked", response.toString())
+                    if(response.isSuccessful){
+                        Log.d("Button Clicked2", response.toString())
+                        if (response.body()=="{ washerstatus: 'AVAILABLE' }"){
+                            Toast.makeText(holder.btnAction.context, "${currentWasher.washername} 사용을 시작합니다.", Toast.LENGTH_SHORT).show()
+                        } else if (response.body()=="REPAIR"){
+                            Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 수리중입니다.", Toast.LENGTH_SHORT).show()
+                        } else if (response.body()=="USED"){
+                            Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 다른 사람이 사용중입니다.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    Log.e("UpdateWasher", "Failed: ${t.message}")
+                }
+            })
         }
     }
 

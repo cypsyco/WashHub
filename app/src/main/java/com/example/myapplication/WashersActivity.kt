@@ -55,8 +55,3 @@ class WashersActivity : AppCompatActivity() {
     }
 }
 
-data class Washer(
-    val id: Int,
-    val washername: String,
-    val washerstatus: String
-)
