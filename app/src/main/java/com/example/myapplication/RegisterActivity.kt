@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -52,6 +54,7 @@ class RegisterActivity : AppCompatActivity() {
         sGender = findViewById(R.id.switchGender)
         sDormitory = findViewById(R.id.spinnerDorm)
 
+        // toolbar
         val toolbartitle = findViewById<TextView>(R.id.toolBarTitle)
         toolbartitle.text = "회원가입"
         val toolbardorm = findViewById<TextView>(R.id.toolBarDorm)
@@ -61,24 +64,38 @@ class RegisterActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        imageView.setOnClickListener {
-            openGalleryForImage()
+        //password
+        val showbtn = findViewById<ImageButton>(R.id.showbutton)
+        showbtn.tag = "0"
+        showbtn.setOnClickListener {
+            Log.d("buttonClicked", showbtn.tag.toString())
+            when(it.tag){
+                "0" -> {
+                    Log.d("buttonClicked1", showbtn.tag.toString())
+                    showbtn.tag = "1"
+                    etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    showbtn.setImageResource(R.drawable.hide)
+                }
+                "1" -> {
+                    Log.d("buttonClicked1", showbtn.tag.toString())
+                    showbtn.tag = "0"
+                    etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                    showbtn.setImageResource(R.drawable.view)
+                }
+            }
+            etPassword.setSelection(etPassword.text!!.length)
         }
 
-        val buttonRegister = findViewById<Button>(R.id.buttonRegister)
-        buttonRegister.setOnClickListener {
-            registerUser()
-            Toast.makeText(this, "Registered!", Toast.LENGTH_SHORT).show()
-
-            val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+        // profileImage
+        imageView.setOnClickListener {
+            openGalleryForImage()
         }
 
         val newAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, maleDorms)
         newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         sDormitory.adapter = newAdapter
 
+        // gender
         sGender.setOnCheckedChangeListener{CompoundButton, onSwitch ->
             if (onSwitch){
                 gender = "남자"
@@ -96,6 +113,7 @@ class RegisterActivity : AppCompatActivity() {
             Log.d("gender",gender)
         }
 
+        // dorm
         sDormitory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -112,6 +130,17 @@ class RegisterActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // 아무것도 선택되지 않았을 때 수행할 작업을 여기에 구현할 수 있습니다.
             }
+        }
+
+        //register
+        val buttonRegister = findViewById<Button>(R.id.buttonRegister)
+        buttonRegister.setOnClickListener {
+            registerUser()
+            Toast.makeText(this, "Registered!", Toast.LENGTH_SHORT).show()
+
+            val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
     }
