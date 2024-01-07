@@ -2,4 +2,5 @@
     <string name="app_name">My Application</string>
     <string name="title_activity_washers">WashersActivity</string>
     <string name="used">사용중</string>
+    <string name="title_activity_time_set">TimeSetActivity</string>
 </resources>
