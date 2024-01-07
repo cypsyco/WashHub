@@ -57,7 +57,7 @@
         circular:thumb_size="24dp" />
 
     <Button
-        android:id="@+id/buttonRegister"
+        android:id="@+id/timesetbtn"
         android:layout_width="120dp"
         android:layout_height="60dp"
         android:text="사용시작"

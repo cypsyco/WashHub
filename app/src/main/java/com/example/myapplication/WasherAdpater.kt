@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.CountDownTimer
 import android.view.LayoutInflater
@@ -11,8 +12,8 @@ import android.widget.TextView
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
@@ -90,7 +91,12 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
                         responseBody?.let {
                             // Handle different washer status
                             when (it.washerstatus) {
-                                "사용 가능" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername} 사용을 시작합니다.", Toast.LENGTH_SHORT).show()
+                                "사용 가능" -> {
+                                    val intent = Intent(holder.itemView.context, TimeSetActivity::class.java)
+                                    intent.putExtra("washername",currentWasher.washername)
+                                    intent.putExtra("washerid", currentWasher.id)
+                                    ContextCompat.startActivity(holder.itemView.context, intent, null)
+                                }
                                 "수리중" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 수리중입니다.", Toast.LENGTH_SHORT).show()
                                 "사용중" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 다른 사람이 사용중입니다.", Toast.LENGTH_SHORT).show()
                                 // Additional cases as needed

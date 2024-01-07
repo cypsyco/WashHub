@@ -1,9 +1,12 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import me.angrybyte.circularslider.CircularSlider
 
@@ -13,10 +16,15 @@ class TimeSetActivity : ComponentActivity() {
         val maxAngle = 2 * Math.PI // 360도에 해당하는 라디안 값
         val maxTime = 90 * 60 // 최대 시간 (90분)
 
-
+        var adjustedAngle: Double
+        if (angle>Math.PI/2){
+            adjustedAngle = angle-(Math.PI/2)
+        }else{
+            adjustedAngle = angle+(Math.PI*3/2)
+        }
         // 슬라이더 각도를 시간으로 변환
-        val time = ((angle-2/Math.PI) / maxAngle * maxTime).toInt()
-        Log.d("slidervalue","${angle}   ")
+        val time = ((adjustedAngle) / maxAngle * maxTime).toInt()
+        Log.d("slidervalue","${angle}")
 
         return time
     }
@@ -27,14 +35,19 @@ class TimeSetActivity : ComponentActivity() {
         return "%02d:%02d".format(minutes, seconds)
     }
 
-    var time = 0
+    var settime = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_time_set)
 
+        val receivedWasherName = intent.getStringExtra("washername")
+        val receivedWasherId = intent.getStringExtra("washerid")
+
         val toolbartitle = findViewById<TextView>(R.id.toolBarTitle)
-        toolbartitle.text = "세탁기"
+        toolbartitle.text = receivedWasherName
+        val toolbardorm = findViewById<TextView>(R.id.toolBarDorm)
+        toolbardorm.text = ""
         val backbtn = findViewById<ImageButton>(R.id.toolBarBtn)
         backbtn.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -43,14 +56,26 @@ class TimeSetActivity : ComponentActivity() {
         val timesettext = findViewById<TextView>(R.id.timesetText)
 
         val circularSlider = findViewById<CircularSlider>(R.id.circular)
+        circularSlider.setPosition(1.0/3.0)
 
         circularSlider.setOnSliderMovedListener(object : CircularSlider.OnSliderMovedListener {
             override fun onSliderMoved(pos: Double) {
                 Log.d("pos", pos.toString())
+
                 val angle = -(pos-0.25) * 2 * Math.PI // 슬라이더의 각도를 라디안 값으로 변환
-                time = mapSliderValueToTime(angle)
-                timesettext.text = formatTime(time)
+                settime = mapSliderValueToTime(angle)
+                timesettext.text = formatTime(settime)
             }
         })
+
+        val timesetbtn = findViewById<Button>(R.id.timesetbtn)
+        timesetbtn.setOnClickListener{
+            val starttime: Long = System.currentTimeMillis()
+            Toast.makeText(this, "${receivedWasherName} 사용을 시작합니다.", Toast.LENGTH_SHORT).show()
+//            TODO("데이타베이스 업데이트: receivedwasherid, starttime, settime*1000 값을 DB에서 업데이트하면 됨")
+            val intent = Intent(this@TimeSetActivity, WashersActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }
