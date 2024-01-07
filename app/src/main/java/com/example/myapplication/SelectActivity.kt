@@ -51,6 +51,7 @@ class SelectActivity : AppCompatActivity() {
                                 this@SelectActivity.dormitory = user.dormitory
                                 this@SelectActivity.gender = user.gender
                                 this@SelectActivity.image = user.image
+                                Toast.makeText(this@SelectActivity, userid, Toast.LENGTH_SHORT).show()
                             }
                         } else {
                             Toast.makeText(this@SelectActivity, "Failed to fetch user details", Toast.LENGTH_SHORT).show()
