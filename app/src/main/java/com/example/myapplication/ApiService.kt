@@ -26,6 +26,8 @@ interface ApiService {
     @POST("/checkUserId")
     fun checkUserId(@Body request: UserIdCheckRequest): Call<UserIdCheckResponse>
 
+    @GET("/userdetails/{userid}")
+    fun getUserDetails(@Path("userid") userid: String): Call<User>
 }
 
 data class User(
