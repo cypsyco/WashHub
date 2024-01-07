@@ -21,7 +21,6 @@ class SelectActivity : AppCompatActivity() {
             Toast.makeText(this, "Washer clicked", Toast.LENGTH_SHORT).show()
             val intent = Intent(this@SelectActivity, WashersActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
         buttonDryer.setOnClickListener {

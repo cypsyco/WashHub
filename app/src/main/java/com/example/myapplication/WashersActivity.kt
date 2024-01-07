@@ -3,6 +3,9 @@ package com.example.myapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
+import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -12,16 +15,17 @@ import retrofit2.Response
 class WashersActivity : AppCompatActivity() {
 
     private var washerList = mutableListOf<Washer>()
-//    = listOf(
-//        Washer(1, "Dryer 1", "USED"),
-//        Washer(2, "Dryer 2", "AVAILABLE"),
-//        // Add other dryers here...
-//    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_washers)
 
+        val toolbartitle = findViewById<TextView>(R.id.toolBarTitle)
+        toolbartitle.text = "세탁기"
+        val backbtn = findViewById<ImageButton>(R.id.toolBarBtn)
+        backbtn.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
         val recyclerView = findViewById<RecyclerView>(R.id.washers)
 

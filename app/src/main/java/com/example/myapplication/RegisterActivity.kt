@@ -16,6 +16,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Switch
+import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +27,6 @@ import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var backbtn: ImageButton
     private lateinit var imageView: ImageView
     private lateinit var etUsername: EditText
     private lateinit var etID: EditText
@@ -45,7 +45,6 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        backbtn = findViewById(R.id.backbutton)
         imageView = findViewById(R.id.imageView)
         etUsername = findViewById(R.id.editTextName)
         etID = findViewById(R.id.editTextID)
@@ -53,6 +52,11 @@ class RegisterActivity : AppCompatActivity() {
         sGender = findViewById(R.id.switchGender)
         sDormitory = findViewById(R.id.spinnerDorm)
 
+        val toolbartitle = findViewById<TextView>(R.id.toolBarTitle)
+        toolbartitle.text = "회원가입"
+        val toolbardorm = findViewById<TextView>(R.id.toolBarDorm)
+        toolbardorm.text = ""
+        val backbtn = findViewById<ImageButton>(R.id.toolBarBtn)
         backbtn.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
