@@ -10,11 +10,11 @@
         android:id="@+id/button_washer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Washer"/>
+        android:text="세탁기"/>
 
     <Button
         android:id="@+id/button_dryer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dryer"/>
+        android:text="건조기"/>ㅁ
 </LinearLayout>

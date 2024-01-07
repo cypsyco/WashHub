@@ -43,7 +43,7 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
 
         holder.btnAction.text = currentWasher.washerstatus
 
-        if (currentWasher.washerstatus == "USED"){
+        if (currentWasher.washerstatus == "사용중"){
             val remainingTime = currentWasher.starttime + currentWasher.settime - System.currentTimeMillis()
 
             holder.mTimer = object : CountDownTimer(remainingTime, 1000) {
@@ -67,7 +67,7 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
 
 
 
-        if (currentWasher.washerstatus.trim() != "AVAILABLE"){
+        if (currentWasher.washerstatus.trim() != "사용 가능"){
             holder.btnAction.setBackgroundColor(ContextCompat.getColor(holder.btnAction.context,R.color.red))
             Log.d("Washerstatus",currentWasher.washerstatus+""+R.color.red.toString())
         }else{
@@ -90,9 +90,9 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
                         responseBody?.let {
                             // Handle different washer status
                             when (it.washerstatus) {
-                                "AVAILABLE" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername} 사용을 시작합니다.", Toast.LENGTH_SHORT).show()
-                                "REPAIR" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 수리중입니다.", Toast.LENGTH_SHORT).show()
-                                "USED" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 다른 사람이 사용중입니다.", Toast.LENGTH_SHORT).show()
+                                "사용 가능" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername} 사용을 시작합니다.", Toast.LENGTH_SHORT).show()
+                                "수리중" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 수리중입니다.", Toast.LENGTH_SHORT).show()
+                                "사용중" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 다른 사람이 사용중입니다.", Toast.LENGTH_SHORT).show()
                                 // Additional cases as needed
                             }
                         }
