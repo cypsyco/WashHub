@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body()?.message == true) {
                         Toast.makeText(this@MainActivity, "Login Successful", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@MainActivity, SelectActivity::class.java)
+                        intent.putExtra("userid", userid)
                         startActivity(intent)
                         finish()
 
