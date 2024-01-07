@@ -77,40 +77,10 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
         }
 
         holder.btnAction.setOnClickListener {
-            Log.d("Button Clicked", currentWasher.id.toString())
-            val startTime = System.currentTimeMillis()
-            val setTime = 3600000L
-            val call = RetrofitClient.instance.updateWasherStatus(currentWasher.id, TimeSet(startTime, setTime))
-            call.enqueue(object : Callback<WasherStatusResponse> {
-                override fun onResponse(
-                    call: Call<WasherStatusResponse>,
-                    response: Response<WasherStatusResponse>
-                ) {
-                    if(response.isSuccessful){
-                        val responseBody = response.body()
-                        responseBody?.let {
-                            // Handle different washer status
-                            when (it.washerstatus) {
-                                "사용 가능" -> {
-                                    val intent = Intent(holder.itemView.context, TimeSetActivity::class.java)
-                                    intent.putExtra("washername",currentWasher.washername)
-                                    intent.putExtra("washerid", currentWasher.id)
-                                    ContextCompat.startActivity(holder.itemView.context, intent, null)
-                                }
-                                "수리중" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 수리중입니다.", Toast.LENGTH_SHORT).show()
-                                "사용중" -> Toast.makeText(holder.btnAction.context, "${currentWasher.washername}는 다른 사람이 사용중입니다.", Toast.LENGTH_SHORT).show()
-                                // Additional cases as needed
-                            }
-                        }
-                    } else {
-                        Log.e("UpdateWasher", "Response not successful: ${response.errorBody()?.string()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<WasherStatusResponse>, t: Throwable) {
-                    Log.e("UpdateWasher", "Failed: ${t.message}")
-                }
-            })
+            val intent = Intent(holder.itemView.context, TimeSetActivity::class.java)
+            intent.putExtra("washername",currentWasher.washername)
+            intent.putExtra("washerid", currentWasher.id)
+            ContextCompat.startActivity(holder.itemView.context, intent, null)
         }
     }
 

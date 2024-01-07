@@ -9,6 +9,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import me.angrybyte.circularslider.CircularSlider
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class TimeSetActivity : ComponentActivity() {
 
@@ -42,7 +45,7 @@ class TimeSetActivity : ComponentActivity() {
         setContentView(R.layout.activity_time_set)
 
         val receivedWasherName = intent.getStringExtra("washername")
-        val receivedWasherId = intent.getStringExtra("washerid")
+        val receivedWasherId = intent.getIntExtra("washerid", -1)
 
         val toolbartitle = findViewById<TextView>(R.id.toolBarTitle)
         toolbartitle.text = receivedWasherName
@@ -69,10 +72,21 @@ class TimeSetActivity : ComponentActivity() {
         })
 
         val timesetbtn = findViewById<Button>(R.id.timesetbtn)
-        timesetbtn.setOnClickListener{
+        timesetbtn.setOnClickListener {
             val starttime: Long = System.currentTimeMillis()
             Toast.makeText(this, "${receivedWasherName} 사용을 시작합니다.", Toast.LENGTH_SHORT).show()
-//            TODO("데이타베이스 업데이트: receivedwasherid, starttime, settime*1000 값을 DB에서 업데이트하면 됨")
+            val setTimeLong = settime.toLong() * 1000
+            val call = RetrofitClient.instance.updateWasherStatus(receivedWasherId, TimeSet(4444, 8888))
+            call.enqueue(object : Callback<WasherStatusResponse> {
+                override fun onResponse(
+                    call: Call<WasherStatusResponse>,
+                    response: Response<WasherStatusResponse>
+                ) {}
+                override fun onFailure(call: Call<WasherStatusResponse>, t: Throwable) {
+                    Log.e("TimeSetActivity", "Retrofit call failed: ${t.message}")
+                }
+            })
+
             val intent = Intent(this@TimeSetActivity, WashersActivity::class.java)
             startActivity(intent)
             finish()
