@@ -23,9 +23,19 @@ interface ApiService {
         @Body timeSet: TimeSet
     ): Call<WasherStatusResponse>
 
+    @POST("/checkUserId")
+    fun checkUserId(@Body request: UserIdCheckRequest): Call<UserIdCheckResponse>
+
 }
 
-data class User(val userid: String, val pw: String, val dormitory: String)
+data class User(
+    val userid: String,
+    val pw: String,
+    val username: String,
+    val dormitory: String,
+    val gender: String,
+    val image: String
+)
 data class ApiResponse(val message: Boolean, val UID: Int = -1)
 
 data class Washer(
@@ -42,3 +52,6 @@ data class TimeSet(
 )
 
 data class WasherStatusResponse(val washerstatus: String)
+
+data class UserIdCheckRequest(val userid: String)
+data class UserIdCheckResponse(val isAvailable: Boolean)

@@ -3,9 +3,11 @@ package com.example.myapplication
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Base64
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -26,6 +28,7 @@ import androidx.appcompat.widget.SwitchCompat
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -34,7 +37,9 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var etID: EditText
     private lateinit var etPassword: EditText
     private lateinit var sGender: Switch
-    private lateinit var sDormitory: Spinner // 기숙사 정보를 위한 EditText 추가
+    private lateinit var sDormitory: Spinner
+    private lateinit var idCheckBtn: Button
+    private var isUserIdChecked = false // ID 중복 확인 상태
 
     var gender = "남자"
     var dorm = "사랑관"
@@ -91,6 +96,11 @@ class RegisterActivity : AppCompatActivity() {
             openGalleryForImage()
         }
 
+        idCheckBtn = findViewById(R.id.idCheckBtn)
+        idCheckBtn.setOnClickListener {
+            checkUserIdAvailability()
+        }
+
         val newAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, maleDorms)
         newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         sDormitory.adapter = newAdapter
@@ -136,11 +146,6 @@ class RegisterActivity : AppCompatActivity() {
         val buttonRegister = findViewById<Button>(R.id.buttonRegister)
         buttonRegister.setOnClickListener {
             registerUser()
-            Toast.makeText(this, "Registered!", Toast.LENGTH_SHORT).show()
-
-            val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
         }
 
     }
@@ -171,11 +176,24 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerUser() {
-        val username = etUsername.text.toString().trim()
+        val userid = etID.text.toString().trim()
         val password = etPassword.text.toString().trim()
+        val username = etUsername.text.toString().trim()
         val dormitory = dorm
+        val gender = gender
+        val image = encodeImageToBase64(imageView)
 
-        RetrofitClient.instance.registerUser(User(username, password, dormitory))
+        if (userid.isEmpty() || password.isEmpty() || username.isEmpty()) {
+            Toast.makeText(this, "모든 정보를 입력해주세요", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (!isUserIdChecked) {
+            Toast.makeText(this, "ID 중복확인을 진행해주세요", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        RetrofitClient.instance.registerUser(User(userid, password, username, dormitory, gender, image))
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.message == true) {
@@ -189,5 +207,48 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(this@RegisterActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
+
+        val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun encodeImageToBase64(imageView: ImageView): String {
+        imageView.buildDrawingCache()
+        val bitmap = imageView.drawingCache
+
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        val imageBytes = outputStream.toByteArray()
+
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT)
+    }
+
+    private fun checkUserIdAvailability() {
+        val userid = etID.text.toString().trim()
+        if (userid.isEmpty()) {
+            Toast.makeText(this, "ID를 입력해주세요", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val call = RetrofitClient.instance.checkUserId(UserIdCheckRequest(userid))
+        call.enqueue(object : Callback<UserIdCheckResponse> {
+            override fun onResponse(call: Call<UserIdCheckResponse>, response: Response<UserIdCheckResponse>) {
+                if (response.isSuccessful) {
+                    if (response.body()?.isAvailable == true) {
+                        Toast.makeText(this@RegisterActivity, "사용 가능한 id입니다", Toast.LENGTH_SHORT).show()
+                        isUserIdChecked = true
+                    } else {
+                        Toast.makeText(this@RegisterActivity, "사용 중인 id입니다", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@RegisterActivity, "서버 에러 발생", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<UserIdCheckResponse>, t: Throwable) {
+                Toast.makeText(this@RegisterActivity, "통신 에러 발생: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         val userid = etUserid.text.toString().trim()
         val password = etPassword.text.toString().trim()
 
-        RetrofitClient.instance.loginUser(User(userid, password, ""))
+        RetrofitClient.instance.loginUser(User(userid, password, "", "", "", ""))
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.message == true) {
