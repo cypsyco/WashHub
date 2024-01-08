@@ -66,6 +66,7 @@
             android:orientation="vertical"
             android:clickable="true">
             <TextView
+                android:id="@+id/myWasher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="세탁기 3"
@@ -95,6 +96,7 @@
             android:orientation="vertical"
             android:clickable="true">
             <TextView
+                android:id="@+id/myDryer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="건조기 5"

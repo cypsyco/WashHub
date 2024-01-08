@@ -2,6 +2,7 @@ package com.example.myapplication.ui.using
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Dryer
 import com.example.myapplication.NavigateActivity
 import com.example.myapplication.R
+import com.example.myapplication.ReservationResponse
 import com.example.myapplication.RetrofitClient
 import com.example.myapplication.Washer
 import com.example.myapplication.WasherAdapter
@@ -101,6 +103,35 @@ class UsingFragment : Fragment() {
                 Log.e("UsingList", "Failed: ${t.message}")
             }
         })
+
+        val navigateActivity = activity as? NavigateActivity
+        val userid = navigateActivity?.getUserId()
+
+        val mywasher = root.findViewById<TextView>(R.id.myWasher)
+        val mydryer = root.findViewById<TextView>(R.id.myDryer)
+
+        if (userid != null) {
+            RetrofitClient.instance.getUserReservations(userid).enqueue(object : Callback<List<ReservationResponse>> {
+                override fun onResponse(call: Call<List<ReservationResponse>>, response: Response<List<ReservationResponse>>) {
+                    if (response.isSuccessful) {
+                        val fetchedList = response.body()
+                        fetchedList?.forEach { using->
+                            mywasher.text = using.washername?: "-"
+                            mydryer.text = using.dryername?: "-"
+                        }
+                    } else {
+                        // 실패 시 처리
+                    }
+                }
+
+                override fun onFailure(call: Call<List<ReservationResponse>>, t: Throwable) {
+//                    TODO("Not yet implemented")
+                }
+            })
+        }
+
+
+
 
 
         return root

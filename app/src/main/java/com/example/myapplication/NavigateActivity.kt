@@ -188,4 +188,8 @@ class NavigateActivity : AppCompatActivity() {
     fun getToolbarDormText(): String {
         return binding.appBarNavigate.toolbar.findViewById<TextView>(R.id.toolbarDorm).text.toString()
     }
+
+    fun getUserId(): String? {
+        return userid
+    }
 }
