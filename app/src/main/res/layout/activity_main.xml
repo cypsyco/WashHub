@@ -4,40 +4,54 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- 사용자 이름 입력 필드 -->
-    <EditText
-        android:id="@+id/etUserid"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id = "@+id/loginlayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="ID"
-        android:inputType="textEmailAddress" />
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
 
-    <!-- 비밀번호 입력 필드 -->
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_below="@id/etUserid"
-        android:layout_marginTop="16dp"/>
+        <!-- 사용자 이름 입력 필드 -->
+        <EditText
+            android:id="@+id/etUserid"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:hint="ID"
+            android:inputType="textEmailAddress"/>
 
-    <!-- 로그인 버튼 -->
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="로그인"
-        android:layout_below="@id/etPassword"
-        android:layout_marginTop="24dp"/>
+        <!-- 비밀번호 입력 필드 -->
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:layout_marginTop="16dp"/>
+        <!-- 로그인 버튼 -->
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:text="로그인"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/blue"
+            android:layout_marginTop="24dp"/>
 
-    <!-- 회원가입 버튼 -->
+        <!-- 회원가입 버튼 -->
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/btnRegister"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="회원가입"
-        android:layout_below="@id/btnLogin"
-        android:layout_marginTop="16dp"/>
-
+        android:textColor="@color/black"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/transparent"
+        android:layout_below="@id/loginlayout"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>
