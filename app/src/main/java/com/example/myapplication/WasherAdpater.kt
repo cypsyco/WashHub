@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -10,10 +11,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,6 +46,7 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
 
 //        val startTime: Long = System.currentTimeMillis()
 //        val setTime = 3600000L
+//        val userid =
 
         holder.btnAction.text = currentWasher.washerstatus
 
@@ -113,6 +117,7 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
                     ContextCompat.startActivity(holder.itemView.context, intent, null)
                 }
                 "사용중" -> {
+                    reserveDialog(holder.itemView.context, currentWasher.washername)
                     // 사용중일 때의 로직
                     Toast.makeText(holder.itemView.context, "기계가 사용 중입니다.", Toast.LENGTH_SHORT).show()
                 }
@@ -121,6 +126,9 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
                     Toast.makeText(holder.itemView.context, "기계가 수리 중입니다. 다른 기계를 이용해 주세요.", Toast.LENGTH_SHORT).show()
                 }
                 "예약중" -> {
+//                    if (currentWasher.using == userid)
+//                    TODO("세탁기 db에 사용중인 사람 아이디 넣고 조건문 처리하기")
+                    reserveDialog(holder.itemView.context, currentWasher.washername)
                     // 예약중일 때의 로직
                     Toast.makeText(holder.itemView.context, "기계가 예약되어 있습니다.", Toast.LENGTH_SHORT).show()
                 }
@@ -134,5 +142,34 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
 
     override fun getItemCount(): Int {
         return washerList.size
+    }
+
+    fun reserveDialog(context:Context, washername: String){
+        val dialog = Dialog(context)
+        dialog.setContentView(R.layout.dialog_reservation)
+
+        val dialogTitle = dialog.findViewById<TextView>(R.id.reserv_title)
+        dialogTitle.text = washername + " 예약목록"
+//        TODO("나중엔 세탁기 이름에서 기숙사 빼기")
+
+        val recyclerView: RecyclerView = dialog.findViewById(R.id.reservations)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        val reservedlist = mutableListOf<User>()
+//        TODO("reservedlist db에서 갖고오기")
+        reservedlist.add(User("estherjsong","123","testusername","아름관", "여자", ""))
+        reservedlist.add(User("asdf","1234","testusername3","아름관", "여자", ""))
+        reservedlist.add(User("qwewr","1234","testusername2","아름관", "여자", ""))
+
+        val adapter = ReservationAdapter(reservedlist)
+        recyclerView.adapter = adapter
+
+        val addbtn = dialog.findViewById<ImageButton>(R.id.addBtn)
+        addbtn.setOnClickListener{
+            Toast.makeText(context,"예약되었습니다.",Toast.LENGTH_SHORT).show()
+//            TODO("db reservedlist에 userid 추가")
+        }
+
+        dialog.show()
     }
 }
