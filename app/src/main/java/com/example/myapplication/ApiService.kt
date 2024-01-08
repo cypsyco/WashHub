@@ -58,6 +58,9 @@ interface ApiService {
     @POST("/reserveWasher")
     fun reserveWasher(@Body reservationRequest: ReservationRequest): Call<ApiResponse>
 
+    @GET("/washersByUser/{userid}")
+    fun getWashersByUser(@Path("userid") userid: String): Call<List<Washer>>
+
 }
 
 data class User(

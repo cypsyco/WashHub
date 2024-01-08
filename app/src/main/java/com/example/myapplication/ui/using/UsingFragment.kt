@@ -47,6 +47,9 @@ class UsingFragment : Fragment() {
         val recyclerView = root.findViewById<RecyclerView>(R.id.usings)
         val layoutManager = LinearLayoutManager(requireContext())
 
+        val navigateActivity = activity as? NavigateActivity
+        val userid = navigateActivity?.getUserId()
+
 //        TODO("song: 상단바 기숙사 바꾸기 비활성화")
 //        val navigateActivity = activity as? NavigateActivity
 //        val toolbardorm = navigateActivity?.getToolbarDorm()
@@ -55,57 +58,81 @@ class UsingFragment : Fragment() {
 //            toolbardorm.
 //        }
 
-//        TODO("jeon: userid에 해당하는 washers 갖고 오는 걸로 변경")
-        val call: Call<List<Washer>> = RetrofitClient.instance.getWashers()
+        // 'UsingFragment' 클래스 내부
+        if (userid != null) {
+            val call: Call<List<Washer>> = RetrofitClient.instance.getWashersByUser(userid)
 
-        call.enqueue(object : Callback<List<Washer>> {
-            override fun onResponse(call: Call<List<Washer>>, response: Response<List<Washer>>) {
-                if (response.isSuccessful) {
-                    Log.d("UsingList", response.body().toString())
-                    val fetchedList = response.body()
-                    fetchedList?.let {
-                        usingList.clear()
-                        usingList.addAll(it)
-
+            call.enqueue(object : Callback<List<Washer>> {
+                override fun onResponse(call: Call<List<Washer>>, response: Response<List<Washer>>) {
+                    if (response.isSuccessful) {
+                        val fetchedList = response.body()
+                        fetchedList?.let {
+                            usingList.clear()
+                            usingList.addAll(it)
+                        }
+                        Log.d("UsingList", usingList.toString())
+                        recyclerView.adapter?.notifyDataSetChanged()
+                    } else {
+                        // 실패 시 처리
+                        Log.d("UsingList", "Response not successful")
                     }
-                    Log.d("UsingList", usingList.toString())
-
-//        TODO("jeon: userid에 해당하는 dryers갖고 오는 걸로 변경")
-                    val call2: Call<List<Dryer>> = RetrofitClient.instance.getDryers()
-
-                    call2.enqueue(object : Callback<List<Dryer>> {
-                        override fun onResponse(call: Call<List<Dryer>>, response: Response<List<Dryer>>) {
-                            if (response.isSuccessful) {
-                                val fetchedList = response.body()
-                                fetchedList?.forEach { dryer->
-                                    usingList.add(Washer(dryer.id+1000,dryer.dryername,dryer.dryerstatus,dryer.starttime,dryer.settime))
-                                    Log.d("UsingList2", dryer.toString())
-                                    Log.d("UsingList2", usingList.toString())
-                                }
-                            } else {
-                                // 실패 시 처리
-                                Log.d("UsingList2", usingList.toString())
-                            }
-                        }
-                        override fun onFailure(call: Call<List<Dryer>>, t: Throwable) {
-                            Log.e("UsingList2", "Failed: ${t.message}")
-                        }
-                    })
-                    recyclerView.adapter?.notifyDataSetChanged()
-                    recyclerView.layoutManager = layoutManager
-                    recyclerView.adapter = UsingAdapter(usingList)
-                } else {
-                    // 실패 시 처리
-                    Log.d("UsingList", usingList.toString())
                 }
-            }
-            override fun onFailure(call: Call<List<Washer>>, t: Throwable) {
-                Log.e("UsingList", "Failed: ${t.message}")
-            }
-        })
+                override fun onFailure(call: Call<List<Washer>>, t: Throwable) {
+                    Log.e("UsingList", "Failed: ${t.message}")
+                }
+            })
+        }
 
-        val navigateActivity = activity as? NavigateActivity
-        val userid = navigateActivity?.getUserId()
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = UsingAdapter(usingList)
+
+//        val call: Call<List<Washer>> = RetrofitClient.instance.getWashers()
+//
+//        call.enqueue(object : Callback<List<Washer>> {
+//            override fun onResponse(call: Call<List<Washer>>, response: Response<List<Washer>>) {
+//                if (response.isSuccessful) {
+//                    Log.d("UsingList", response.body().toString())
+//                    val fetchedList = response.body()
+//                    fetchedList?.let {
+//                        usingList.clear()
+//                        usingList.addAll(it)
+//
+//                    }
+//                    Log.d("UsingList", usingList.toString())
+//
+////        TODO("jeon: userid에 해당하는 dryers갖고 오는 걸로 변경")
+//                    val call2: Call<List<Dryer>> = RetrofitClient.instance.getDryers()
+//
+//                    call2.enqueue(object : Callback<List<Dryer>> {
+//                        override fun onResponse(call: Call<List<Dryer>>, response: Response<List<Dryer>>) {
+//                            if (response.isSuccessful) {
+//                                val fetchedList = response.body()
+//                                fetchedList?.forEach { dryer->
+//                                    usingList.add(Washer(dryer.id+1000,dryer.dryername,dryer.dryerstatus,dryer.starttime,dryer.settime))
+//                                    Log.d("UsingList2", dryer.toString())
+//                                    Log.d("UsingList2", usingList.toString())
+//                                }
+//                            } else {
+//                                // 실패 시 처리
+//                                Log.d("UsingList2", usingList.toString())
+//                            }
+//                        }
+//                        override fun onFailure(call: Call<List<Dryer>>, t: Throwable) {
+//                            Log.e("UsingList2", "Failed: ${t.message}")
+//                        }
+//                    })
+//                    recyclerView.adapter?.notifyDataSetChanged()
+//                    recyclerView.layoutManager = layoutManager
+//                    recyclerView.adapter = UsingAdapter(usingList)
+//                } else {
+//                    // 실패 시 처리
+//                    Log.d("UsingList", usingList.toString())
+//                }
+//            }
+//            override fun onFailure(call: Call<List<Washer>>, t: Throwable) {
+//                Log.e("UsingList", "Failed: ${t.message}")
+//            }
+//        })
 
         val mywasher = root.findViewById<TextView>(R.id.myWasher)
         val mydryer = root.findViewById<TextView>(R.id.myDryer)
