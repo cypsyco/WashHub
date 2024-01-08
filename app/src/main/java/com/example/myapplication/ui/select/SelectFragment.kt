@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.select
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -36,11 +37,18 @@ class SelectFragment : Fragment() {
         _binding = FragmentSelectBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val navigateActivity = activity as? NavigateActivity
+//        val toolbardorm = navigateActivity?.getToolbarDorm()
+//        if (toolbardorm != null) {
+//            toolbardorm.setTextColor(Color.BLACK)
+//            toolbardorm.isClickable = true
+//        }
+
         val buttonWasher = root.findViewById<Button>(R.id.button_washer)
         val buttonDryer = root.findViewById<Button>(R.id.button_dryer)
 
         buttonWasher.setOnClickListener {
-            val navigateActivity = activity as? NavigateActivity
+//            val navigateActivity = activity as? NavigateActivity
             val toolbardormText = navigateActivity?.getToolbarDormText()
             val intent = Intent(requireContext(), WashersActivity::class.java)
             val receivedIntent = activity?.intent
