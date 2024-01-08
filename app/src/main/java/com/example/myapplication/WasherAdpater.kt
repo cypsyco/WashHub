@@ -115,6 +115,7 @@ class WasherAdapter(private val washerList: List<Washer>, private val userid: St
                     val intent = Intent(holder.itemView.context, TimeSetActivity::class.java)
                     intent.putExtra("washername",currentWasher.washername)
                     intent.putExtra("washerid", currentWasher.id)
+                    intent.putExtra("userid", userid)
                     ContextCompat.startActivity(holder.itemView.context, intent, null)
                 }
                 "사용중" -> {
