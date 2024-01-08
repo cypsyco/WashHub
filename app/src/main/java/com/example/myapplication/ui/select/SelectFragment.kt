@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.myapplication.NavigateActivity
 import com.example.myapplication.R
 import com.example.myapplication.RetrofitClient
 import com.example.myapplication.User
@@ -39,13 +40,16 @@ class SelectFragment : Fragment() {
         val buttonDryer = root.findViewById<Button>(R.id.button_dryer)
 
         buttonWasher.setOnClickListener {
-            Toast.makeText(requireContext(), "Washer clicked", Toast.LENGTH_SHORT).show()
+            val navigateActivity = activity as? NavigateActivity
+            val toolbardormText = navigateActivity?.getToolbarDormText()
             val intent = Intent(requireContext(), WashersActivity::class.java)
             val receivedIntent = activity?.intent
             val userid = receivedIntent?.getStringExtra("userid")
             intent.putExtra("userid", userid)
+            intent.putExtra("toolbardormText", toolbardormText)
             startActivity(intent)
         }
+
 
         buttonDryer.setOnClickListener {
             Toast.makeText(requireContext(), "Dryer clicked", Toast.LENGTH_SHORT).show()

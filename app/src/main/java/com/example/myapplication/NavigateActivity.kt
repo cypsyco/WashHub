@@ -184,4 +184,8 @@ class NavigateActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_navigate)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+    fun getToolbarDormText(): String {
+        return binding.appBarNavigate.toolbar.findViewById<TextView>(R.id.toolbarDorm).text.toString()
+    }
 }

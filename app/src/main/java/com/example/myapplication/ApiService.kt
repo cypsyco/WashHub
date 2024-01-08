@@ -16,6 +16,17 @@ interface ApiService {
 
     @GET("/washers")
     fun getWashers(): Call<List<Washer>>
+    @GET("/washers1")
+    fun getWashersDorm1(): Call<List<Washer>>
+
+    @GET("/washers2")
+    fun getWashersDorm2(): Call<List<Washer>>
+
+    @GET("/washers3")
+    fun getWashersDorm3(): Call<List<Washer>>
+
+    @GET("/washers4")
+    fun getWashersDorm4(): Call<List<Washer>>
 
     @POST("/washerstatus/{id}")
     fun updateWasherStatus(

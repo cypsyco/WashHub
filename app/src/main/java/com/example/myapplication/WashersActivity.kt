@@ -33,6 +33,7 @@ class WashersActivity : AppCompatActivity() {
         toolbartitle.text = "세탁기"
 
         userid = intent.getStringExtra("userid")
+        val toolbardormText = intent.getStringExtra("toolbardormText")
 
         val backbtn = findViewById<ImageButton>(R.id.toolBarBtn)
         backbtn.setOnClickListener {
@@ -114,7 +115,14 @@ class WashersActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
 
-        val call = RetrofitClient.instance.getWashers()
+        val call: Call<List<Washer>> = when (toolbardormText) {
+            "사랑관" -> RetrofitClient.instance.getWashersDorm1()
+            "소망관" -> RetrofitClient.instance.getWashersDorm2()
+            "아름관" -> RetrofitClient.instance.getWashersDorm3()
+            "나래관" -> RetrofitClient.instance.getWashersDorm4()
+            else -> RetrofitClient.instance.getWashers() // 기본값ㅁㄴ
+        }
+
         call.enqueue(object : Callback<List<Washer>> {
             override fun onResponse(call: Call<List<Washer>>, response: Response<List<Washer>>) {
                 if (response.isSuccessful) {
