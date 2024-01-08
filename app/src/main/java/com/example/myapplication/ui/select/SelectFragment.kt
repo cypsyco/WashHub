@@ -41,6 +41,9 @@ class SelectFragment : Fragment() {
         buttonWasher.setOnClickListener {
             Toast.makeText(requireContext(), "Washer clicked", Toast.LENGTH_SHORT).show()
             val intent = Intent(requireContext(), WashersActivity::class.java)
+            val receivedIntent = activity?.intent
+            val userid = receivedIntent?.getStringExtra("userid")
+            intent.putExtra("userid", userid)
             startActivity(intent)
         }
 
