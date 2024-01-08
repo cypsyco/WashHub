@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ui.select.SelectFragment"
+android:orientation="vertical"
+android:gravity="center"
+android:padding="16dp">
+
+<!--    <ImageButton-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src=""-->
+
+<Button
+    android:id="@+id/button_washer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="세탁기"/>
+
+<Button
+    android:id="@+id/button_dryer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="건조기"/>
+</LinearLayout>
