@@ -26,6 +26,7 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
         val washername: TextView = itemView.findViewById(R.id.txtWasherName)
         val remainingTime: TextView = itemView.findViewById(R.id.txtRemainingTime)
         val btnAction: Button = itemView.findViewById(R.id.btnAction)
+        var washerId: Int = 0
         lateinit var mTimer: CountDownTimer
     }
 
@@ -38,17 +39,42 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: WasherViewHolder, position: Int) {
         val currentWasher = washerList[position]
         holder.washername.text = currentWasher.washername
+        holder.washerId = currentWasher.id
 
 //        val startTime: Long = System.currentTimeMillis()
 //        val setTime = 3600000L
 
         holder.btnAction.text = currentWasher.washerstatus
 
-        if (currentWasher.washerstatus == "사용중"){
+        if (currentWasher.washerstatus == "사용중") {
             val remainingTime = currentWasher.starttime + currentWasher.settime - System.currentTimeMillis()
 
             holder.mTimer = object : CountDownTimer(remainingTime, 1000) {
+                var isOneSecondLeft = false
+
                 override fun onTick(millisUntilFinished: Long) {
+                    if (millisUntilFinished <= 1000 && !isOneSecondLeft) {
+                        isOneSecondLeft = true
+                        Toast.makeText(holder.itemView.context, "세탁이 완료되었습니다", Toast.LENGTH_SHORT).show()
+                        RetrofitClient.instance.endWasherSession(holder.washerId).enqueue(object : Callback<ApiResponse> {
+                            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                                if (response.isSuccessful && response.body()?.message == true) {
+                                    Toast.makeText(holder.itemView.context, "세탁기 상태가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show()
+                                    currentWasher.washerstatus = "사용 가능"
+                                    notifyItemChanged(position)
+                                } else {
+                                    Toast.makeText(holder.itemView.context, "세탁기 상태 업데이트에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                                    Log.e("WasherUpdateError", "Response Code: ${response.code()} Error Body: ${response.errorBody()?.string()}")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                                Toast.makeText(holder.itemView.context, "네트워크 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                                Log.e("NetworkError", "Failed to connect to the server", t)
+                            }
+                        })
+                    }
+
                     val hours = millisUntilFinished / (1000 * 60 * 60)
                     val minutes = (millisUntilFinished % (1000 * 60 * 60)) / (1000 * 60)
                     val seconds = (millisUntilFinished % (1000 * 60)) / 1000
@@ -61,8 +87,9 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
                     holder.remainingTime.text = ""
                 }
             }
+
             holder.mTimer.start()
-        }else{
+        } else {
             holder.remainingTime.text = ""
         }
 
@@ -77,10 +104,31 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
         }
 
         holder.btnAction.setOnClickListener {
-            val intent = Intent(holder.itemView.context, TimeSetActivity::class.java)
-            intent.putExtra("washername",currentWasher.washername)
-            intent.putExtra("washerid", currentWasher.id)
-            ContextCompat.startActivity(holder.itemView.context, intent, null)
+            when (currentWasher.washerstatus) {
+                "사용 가능" -> {
+                    // 사용 가능일 때의 로직
+                    val intent = Intent(holder.itemView.context, TimeSetActivity::class.java)
+                    intent.putExtra("washername",currentWasher.washername)
+                    intent.putExtra("washerid", currentWasher.id)
+                    ContextCompat.startActivity(holder.itemView.context, intent, null)
+                }
+                "사용중" -> {
+                    // 사용중일 때의 로직
+                    Toast.makeText(holder.itemView.context, "기계가 사용 중입니다.", Toast.LENGTH_SHORT).show()
+                }
+                "수리중" -> {
+                    // 수리중일 때의 로직
+                    Toast.makeText(holder.itemView.context, "기계가 수리 중입니다. 다른 기계를 이용해 주세요.", Toast.LENGTH_SHORT).show()
+                }
+                "예약중" -> {
+                    // 예약중일 때의 로직
+                    Toast.makeText(holder.itemView.context, "기계가 예약되어 있습니다.", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    // 그 외의 경우
+                    Toast.makeText(holder.itemView.context, "상태를 확인할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

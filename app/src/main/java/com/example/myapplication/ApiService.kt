@@ -28,6 +28,11 @@ interface ApiService {
 
     @GET("/userdetails/{userid}")
     fun getUserDetails(@Path("userid") userid: String): Call<User>
+
+    @POST("/washerend/{id}")
+    fun endWasherSession(
+        @Path("id") id: Int
+    ): Call<ApiResponse>
 }
 
 data class User(
@@ -43,7 +48,7 @@ data class ApiResponse(val message: Boolean, val UID: Int = -1)
 data class Washer(
     val id: Int,
     val washername: String,
-    val washerstatus: String,
+    var washerstatus: String,
     val starttime: Long,
     val settime: Long
 )

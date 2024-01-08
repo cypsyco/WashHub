@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -24,7 +25,10 @@ class WashersActivity : AppCompatActivity() {
         toolbartitle.text = "세탁기"
         val backbtn = findViewById<ImageButton>(R.id.toolBarBtn)
         backbtn.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            val intent = Intent(this, SelectActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+            finish()
         }
 
         val recyclerView = findViewById<RecyclerView>(R.id.washers)
@@ -32,30 +36,36 @@ class WashersActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
 
         val call = RetrofitClient.instance.getWashers()
-        call.enqueue(object: Callback<List<Washer>> {
-        override fun onResponse(call: Call<List<Washer>>, response: Response<List<Washer>>) {
-            if (response.isSuccessful) {
-                Log.d("WasherList", response.body().toString())
-                val fetchedList = response.body()
-                fetchedList?.let{
-                    washerList.clear()
-                    washerList.addAll(it)
-                    recyclerView.adapter?.notifyDataSetChanged()
+        call.enqueue(object : Callback<List<Washer>> {
+            override fun onResponse(call: Call<List<Washer>>, response: Response<List<Washer>>) {
+                if (response.isSuccessful) {
+                    Log.d("WasherList", response.body().toString())
+                    val fetchedList = response.body()
+                    fetchedList?.let {
+                        washerList.clear()
+                        washerList.addAll(it)
+                        recyclerView.adapter?.notifyDataSetChanged()
+                    }
+                    Log.d("WasherList2", washerList.toString())
+                } else {
+                    // 실패 시 처리
                 }
-                Log.d("WasherList2", washerList.toString())
-            } else {
-                // 실패 시 처리
             }
-        }
 
-        override fun onFailure(call: Call<List<Washer>>, t: Throwable) {
-            Log.e("WasherList", "Failed: ${t.message}")
-        }
-    })
-
-
+            override fun onFailure(call: Call<List<Washer>>, t: Throwable) {
+                Log.e("WasherList", "Failed: ${t.message}")
+            }
+        })
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = WasherAdapter(washerList)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, SelectActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+        finish()
     }
 }
 

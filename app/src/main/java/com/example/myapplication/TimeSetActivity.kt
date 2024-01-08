@@ -74,9 +74,9 @@ class TimeSetActivity : ComponentActivity() {
         val timesetbtn = findViewById<Button>(R.id.timesetbtn)
         timesetbtn.setOnClickListener {
             val starttime: Long = System.currentTimeMillis()
-            Toast.makeText(this, "${receivedWasherName} 사용을 시작합니다.", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "${receivedWasherName} 사용을 시작합니다.", Toast.LENGTH_SHORT).show()
             val setTimeLong = settime.toLong() * 1000
-            val call = RetrofitClient.instance.updateWasherStatus(receivedWasherId, TimeSet(4444, 8888))
+            val call = RetrofitClient.instance.updateWasherStatus(receivedWasherId, TimeSet(starttime, setTimeLong))
             call.enqueue(object : Callback<WasherStatusResponse> {
                 override fun onResponse(
                     call: Call<WasherStatusResponse>,
