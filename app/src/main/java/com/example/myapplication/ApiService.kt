@@ -16,6 +16,10 @@ interface ApiService {
 
     @GET("/washers")
     fun getWashers(): Call<List<Washer>>
+
+    @GET("/dryers")
+    fun getDryers(): Call<List<Dryer>>
+
     @GET("/washers1")
     fun getWashersDorm1(): Call<List<Washer>>
 
@@ -70,6 +74,14 @@ data class Washer(
     val id: Int,
     val washername: String,
     var washerstatus: String,
+    val starttime: Long,
+    val settime: Long
+)
+
+data class Dryer(
+    val id: Int,
+    val dryername: String,
+    var dryerstatus: String,
     val starttime: Long,
     val settime: Long
 )

@@ -116,7 +116,7 @@ class NavigateActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_select, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_select, R.id.nav_using, R.id.nav_slideshow
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -129,7 +129,7 @@ class NavigateActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener{ _, destination, _ ->
             val navtitle = when (destination.id) {
                 R.id.nav_select -> getString(R.string.menu_select)
-                R.id.nav_gallery -> getString(R.string.menu_gallery)
+                R.id.nav_using -> "사용중 및 예약 현황"
                 R.id.nav_slideshow -> getString(R.string.menu_slideshow)
                 else -> getString(R.string.app_name)
             }

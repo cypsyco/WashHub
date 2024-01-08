@@ -12,6 +12,6 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_select">시설물</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="menu_using">사용중 및 예약 현황</string>
     <string name="menu_slideshow">Slideshow</string>
 </resources>
