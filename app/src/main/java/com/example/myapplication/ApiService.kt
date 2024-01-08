@@ -88,7 +88,8 @@ data class Dryer(
 
 data class TimeSet(
     val starttime: Long,
-    val settime: Long
+    val settime: Long,
+    val userid: String
 )
 
 data class WasherStatusResponse(val washerstatus: String)

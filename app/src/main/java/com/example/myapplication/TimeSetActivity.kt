@@ -77,16 +77,24 @@ class TimeSetActivity : ComponentActivity() {
             val starttime: Long = System.currentTimeMillis()
             //Toast.makeText(this, "${receivedWasherName} 사용을 시작합니다.", Toast.LENGTH_SHORT).show()
             val setTimeLong = settime.toLong() * 1000
-            val call = RetrofitClient.instance.updateWasherStatus(receivedWasherId, TimeSet(starttime, setTimeLong))
-            call.enqueue(object : Callback<WasherStatusResponse> {
-                override fun onResponse(
-                    call: Call<WasherStatusResponse>,
-                    response: Response<WasherStatusResponse>
-                ) {}
-                override fun onFailure(call: Call<WasherStatusResponse>, t: Throwable) {
-                    Log.e("TimeSetActivity", "Retrofit call failed: ${t.message}")
-                }
-            })
+            val timeSet = userid?.let { it1 -> TimeSet(starttime, setTimeLong, it1) }
+            val call = timeSet?.let { it1 ->
+                RetrofitClient.instance.updateWasherStatus(receivedWasherId,
+                    it1
+                )
+            }
+            if (call != null) {
+                call.enqueue(object : Callback<WasherStatusResponse> {
+                    override fun onResponse(
+                        call: Call<WasherStatusResponse>,
+                        response: Response<WasherStatusResponse>
+                    ) {}
+
+                    override fun onFailure(call: Call<WasherStatusResponse>, t: Throwable) {
+                        Log.e("TimeSetActivity", "Retrofit call failed: ${t.message}")
+                    }
+                })
+            }
 
             val intent = Intent(this@TimeSetActivity, WashersActivity::class.java)
             intent.putExtra("userid", userid)
