@@ -23,7 +23,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
 
-class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter<WasherAdapter.WasherViewHolder>() {
+class WasherAdapter(private val washerList: List<Washer>, private val userid: String) : RecyclerView.Adapter<WasherAdapter.WasherViewHolder>() {
 
     class WasherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val washername: TextView = itemView.findViewById(R.id.txtWasherName)
@@ -117,9 +117,9 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
                     ContextCompat.startActivity(holder.itemView.context, intent, null)
                 }
                 "사용중" -> {
-                    reserveDialog(holder.itemView.context, currentWasher.washername)
+                    reserveDialog(holder.itemView.context, currentWasher.washername, currentWasher.id, userid)
                     // 사용중일 때의 로직
-                    Toast.makeText(holder.itemView.context, "기계가 사용 중입니다.", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(holder.itemView.context, "기계가 사용 중입니다.", Toast.LENGTH_SHORT).show()
                 }
                 "수리중" -> {
                     // 수리중일 때의 로직
@@ -128,7 +128,7 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
                 "예약중" -> {
 //                    if (currentWasher.using == userid)
 //                    TODO("세탁기 db에 사용중인 사람 아이디 넣고 조건문 처리하기")
-                    reserveDialog(holder.itemView.context, currentWasher.washername)
+                    reserveDialog(holder.itemView.context, currentWasher.washername, currentWasher.id, userid)
                     // 예약중일 때의 로직
                     Toast.makeText(holder.itemView.context, "기계가 예약되어 있습니다.", Toast.LENGTH_SHORT).show()
                 }
@@ -144,30 +144,87 @@ class WasherAdapter(private val washerList: List<Washer>) : RecyclerView.Adapter
         return washerList.size
     }
 
-    fun reserveDialog(context:Context, washername: String){
+    fun reserveDialog(context: Context, washerName: String, washerId: Int, userid: String) {
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.dialog_reservation)
 
         val dialogTitle = dialog.findViewById<TextView>(R.id.reserv_title)
-        dialogTitle.text = washername + " 예약목록"
-//        TODO("나중엔 세탁기 이름에서 기숙사 빼기")
+        dialogTitle.text = washerName + " 예약목록"
 
         val recyclerView: RecyclerView = dialog.findViewById(R.id.reservations)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        val reservedlist = mutableListOf<User>()
-//        TODO("reservedlist db에서 갖고오기")
-        reservedlist.add(User("estherjsong","123","testusername","아름관", "여자", ""))
-        reservedlist.add(User("asdf","1234","testusername3","아름관", "여자", ""))
-        reservedlist.add(User("qwewr","1234","testusername2","아름관", "여자", ""))
+        val reservedlist = mutableListOf<String>()
+
+        // 예약 목록을 불러와 reservedlist에 추가
+        RetrofitClient.instance.getWasherReservations(washerId)
+            .enqueue(object : Callback<List<String>> {
+                override fun onResponse(
+                    call: Call<List<String>>,
+                    response: Response<List<String>>
+                ) {
+                    if (response.isSuccessful) {
+                        reservedlist.clear()
+                        reservedlist.addAll(response.body() ?: emptyList())
+                        recyclerView.adapter?.notifyDataSetChanged()
+                    } else {
+                        Log.e(
+                            "ReserveDialog",
+                            "서버 응답 실패: ${response.code()} - ${response.errorBody()?.string()}"
+                        )
+                        Toast.makeText(context, "예약 목록을 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                    Toast.makeText(context, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            })
 
         val adapter = ReservationAdapter(reservedlist)
         recyclerView.adapter = adapter
 
         val addbtn = dialog.findViewById<ImageButton>(R.id.addBtn)
-        addbtn.setOnClickListener{
-            Toast.makeText(context,"예약되었습니다.",Toast.LENGTH_SHORT).show()
-//            TODO("db reservedlist에 userid 추가")
+        addbtn.setOnClickListener {
+            val reservationRequest = ReservationRequest(userid, washerId)
+            RetrofitClient.instance.reserveWasher(reservationRequest).enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                    if (response.isSuccessful && response.body()?.message == true) {
+
+                        RetrofitClient.instance.getWasherReservations(washerId)
+                            .enqueue(object : Callback<List<String>> {
+                                override fun onResponse(
+                                    call: Call<List<String>>,
+                                    response: Response<List<String>>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        reservedlist.clear()
+                                        reservedlist.addAll(response.body() ?: emptyList())
+                                        recyclerView.adapter?.notifyDataSetChanged()
+                                    } else {
+                                        Log.e(
+                                            "ReserveDialog",
+                                            "서버 응답 실패: ${response.code()} - ${response.errorBody()?.string()}"
+                                        )
+                                        Toast.makeText(context, "예약 목록을 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                                    Toast.makeText(context, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                        Toast.makeText(context, "예약이 성공적으로 업데이트되었습니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // 예약이 이미 존재하는 경우
+                        Toast.makeText(context, "이미 예약한 세탁기가 있습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
 
         dialog.show()

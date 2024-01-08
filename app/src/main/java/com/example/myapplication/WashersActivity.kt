@@ -144,7 +144,12 @@ class WashersActivity : AppCompatActivity() {
             }
         })
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = WasherAdapter(washerList)
+        userid?.let { nonNullUserId ->
+            recyclerView.adapter = WasherAdapter(washerList, nonNullUserId)
+        } ?: run {
+            // userid가 null인 경우의 처리
+            Toast.makeText(this, "User ID is missing", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onBackPressed() {
