@@ -6,6 +6,7 @@
     android:layout_gravity="center"
     android:orientation="horizontal"
     android:background="@drawable/list_card"
+    android:backgroundTint="@color/lightblue"
     android:layout_margin="5dp">
     <TextView
         android:id="@+id/reservedOrder"
