@@ -49,8 +49,8 @@ class SelectFragment : Fragment() {
 
         buttonWasher.setOnClickListener {
 //            val navigateActivity = activity as? NavigateActivity
-            val toolbardormText = navigateActivity?.getToolbarDormText()
             val intent = Intent(requireContext(), WashersActivity::class.java)
+            val toolbardormText = navigateActivity?.getToolbarDormText()
             val receivedIntent = activity?.intent
             val userid = receivedIntent?.getStringExtra("userid")
             intent.putExtra("userid", userid)

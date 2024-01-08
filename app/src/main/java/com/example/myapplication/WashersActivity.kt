@@ -25,6 +25,8 @@ class WashersActivity : AppCompatActivity() {
     private var dormitory: String? = null
     private var gender: String? = "true"
     private var image: String? = null
+
+    private lateinit var toolbardorm:TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_washers)
@@ -44,38 +46,38 @@ class WashersActivity : AppCompatActivity() {
             finish()
         }
 
-        val toolbardorm = findViewById<TextView>(R.id.toolBarDorm)
-
-        //사용자 정보 불러오기
-        userid?.let {
-            RetrofitClient.instance.getUserDetails(it)
-                .enqueue(object : Callback<User> {
-                    override fun onResponse(call: Call<User>, response: Response<User>) {
-                        if (response.isSuccessful) {
-                            response.body()?.let { user ->
-                                userid = user.userid
-                                password = user.pw
-                                username = user.username
-                                dormitory = user.dormitory
-                                gender = user.gender
-                                image = user.image
-                                toolbardorm.text = dormitory
-//                                Toast.makeText(this, userid, Toast.LENGTH_SHORT).show()
-                            }
-                        } else {
-//                            Toast.makeText(this@SelectActivity, "Failed to fetch user details", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<User>, t: Throwable) {
-//                        Toast.makeText(this@SelectActivity, "에러: ${t.message}", Toast.LENGTH_SHORT).show()
-                        Log.e("SelectActivity", "에러: ${t.message}")
-                    }
-
-                })
-        } ?: run {
-            Toast.makeText(this, "User ID is null", Toast.LENGTH_SHORT).show()
-        }
+        toolbardorm = findViewById(R.id.toolBarDorm)
+        toolbardorm.text = toolbardormText
+//
+//        //사용자 정보 불러오기
+//        userid?.let {
+//            RetrofitClient.instance.getUserDetails(it)
+//                .enqueue(object : Callback<User> {
+//                    override fun onResponse(call: Call<User>, response: Response<User>) {
+//                        if (response.isSuccessful) {
+//                            response.body()?.let { user ->
+//                                userid = user.userid
+//                                password = user.pw
+//                                username = user.username
+//                                dormitory = user.dormitory
+//                                gender = user.gender
+//                                image = user.image
+////                                Toast.makeText(this, userid, Toast.LENGTH_SHORT).show()
+//                            }
+//                        } else {
+////                            Toast.makeText(this@SelectActivity, "Failed to fetch user details", Toast.LENGTH_SHORT).show()
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<User>, t: Throwable) {
+////                        Toast.makeText(this@SelectActivity, "에러: ${t.message}", Toast.LENGTH_SHORT).show()
+//                        Log.e("SelectActivity", "에러: ${t.message}")
+//                    }
+//
+//                })
+//        } ?: run {
+//            Toast.makeText(this, "User ID is null", Toast.LENGTH_SHORT).show()
+//        }
 
         toolbardorm.setOnClickListener{
             val popup = PopupMenu(this, toolbardorm)
@@ -145,7 +147,8 @@ class WashersActivity : AppCompatActivity() {
         })
         recyclerView.layoutManager = layoutManager
         userid?.let { nonNullUserId ->
-            recyclerView.adapter = WasherAdapter(washerList, nonNullUserId)
+            recyclerView.adapter =
+                toolbardormText?.let { WasherAdapter(washerList, nonNullUserId, it) }
         } ?: run {
             // userid가 null인 경우의 처리
             Toast.makeText(this, "User ID is missing", Toast.LENGTH_SHORT).show()
@@ -157,6 +160,7 @@ class WashersActivity : AppCompatActivity() {
         val intent = Intent(this, NavigateActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         intent.putExtra("userid",userid)
+        intent.putExtra("toolbardormText", toolbardorm.text)
         startActivity(intent)
         finish()
     }
