@@ -61,6 +61,9 @@ interface ApiService {
     @GET("/washersByUser/{userid}")
     fun getWashersByUser(@Path("userid") userid: String): Call<List<Washer>>
 
+    @GET("/washersByUser/{userid}")
+    fun getDryersByUser(@Path("userid") userid: String): Call<List<Dryer>>
+
 }
 
 data class User(
