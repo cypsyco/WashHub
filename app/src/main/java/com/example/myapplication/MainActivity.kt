@@ -5,8 +5,10 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Call
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         etPassword = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
         btnRegister = findViewById(R.id.btnRegister)
+        val logo = findViewById<ImageView>(R.id.logo)
 
         btnLogin.setOnClickListener {
             loginUser()
@@ -37,6 +40,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, RegisterActivity::class.java)
             startActivity(intent)
         }
+//        val scale_anim = AnimationUtils.loadAnimation(this@MainActivity, R.anim.reserve_btn_anim)
+//        logo.animation = scale_anim
+//        scale_anim.start()
     }
 
     private fun loginUser() {

@@ -38,39 +38,50 @@
         android:orientation="horizontal"
         android:layout_weight="1">
 
-            <LinearLayout
+            <RelativeLayout
                 android:orientation="vertical"
-                android:id="@+id/rsvWasherCard"
                 android:layout_width="300dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:background="@drawable/background_img_1"
-                android:backgroundTint="@color/lightblue"
                 android:layout_weight="7"
                 android:clickable="true">
-                <TextView
-                    android:id="@+id/rsvWasherName"
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/textsofrsvWasher"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_weight="7">
+                    <TextView
+                        android:id="@+id/rsvWasherName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="-"
+                        android:textStyle="bold"
+                        android:textSize="20sp"/>
+                    <TextView
+                        android:id="@+id/rsvWasherdorm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:textAlignment="center"
+                        android:text=""
+                        android:textSize="17sp"/>
+                    <TextView
+                        android:id="@+id/rsvWasherTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text=""/>
+                </LinearLayout>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/rsvWasherCard"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="-"
-                    android:textStyle="bold"
-                    android:textSize="20sp"/>
-                <TextView
-                    android:id="@+id/rsvWasherdorm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:textAlignment="center"
-                    android:text=""
-                    android:textSize="17sp"/>
-                <TextView
-                    android:id="@+id/rsvWasherTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text=""/>
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/lightblue"
+                    app:cardCornerRadius="15dp"/>
+            </RelativeLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/reserved_people_for_washer"
             android:layout_width="match_parent"
@@ -79,6 +90,7 @@
             android:layout_gravity="center"
             android:paddingStart="15dp"
             android:orientation="vertical"
+            android:background="@null"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/reserved_item" />
     </LinearLayout>
@@ -98,7 +110,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="예약중인 세탁기"
+            android:text="예약중인 건조기"
             android:textAlignment="viewStart"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -120,39 +132,39 @@
         android:orientation="horizontal"
         android:layout_weight="1">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:id="@+id/rsvDryerCard"
-            android:layout_width="300dp"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:background="@drawable/background_img_1"
-            android:backgroundTint="@color/lightblue"
-            android:layout_weight="7"
-            android:clickable="true">
-            <TextView
-                android:id="@+id/rsvDryerName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="-"
-                android:textStyle="bold"
-                android:textSize="20sp"/>
-            <TextView
-                android:id="@+id/rsvDryerdorm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:textAlignment="center"
-                android:text=""
-                android:textSize="17sp"/>
-            <TextView
-                android:id="@+id/rsvDryerTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text=""/>
-        </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/rsvDryerCard"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:background="@drawable/list_card"
+                android:backgroundTint="@color/lightblue"
+                android:layout_weight="7"
+                android:clickable="true">
+                <TextView
+                    android:id="@+id/rsvDryerName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="-"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/rsvDryerdorm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:textAlignment="center"
+                    android:text=""
+                    android:textSize="17sp"/>
+                <TextView
+                    android:id="@+id/rsvDryerTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text=""/>
+            </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/reserved_people_for_dryer"
             android:layout_width="match_parent"
