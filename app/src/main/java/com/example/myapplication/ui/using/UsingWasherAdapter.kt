@@ -39,56 +39,32 @@ class UsingWasherAdapter(private val usingList: List<Washer>) : RecyclerView.Ada
     override fun onBindViewHolder(holder: UsingViewHolder, position: Int) {
         val currentUsing = usingList[position]
         holder.usingname.text = currentUsing.washername
-        holder.dorm.text = "(사랑관)"  //TODO("기숙사이름 알맞게")
+        holder.dorm.text = usingList[position].dorm
         val usingid = currentUsing.id
 
 
         val remainingTime = currentUsing.starttime + currentUsing.settime - System.currentTimeMillis()
 
         if(remainingTime>0){
-            holder.mTimer = object : CountDownTimer(remainingTime, 1000) {
-                var isOneSecondLeft = false
+            if (remainingTime > 0) {
+                holder.mTimer = object : CountDownTimer(remainingTime, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        val hours = millisUntilFinished / (1000 * 60 * 60)
+                        val minutes = (millisUntilFinished % (1000 * 60 * 60)) / (1000 * 60)
+                        val seconds = (millisUntilFinished % (1000 * 60)) / 1000
 
-                override fun onTick(millisUntilFinished: Long) {
-                    if (millisUntilFinished <= 1000 && !isOneSecondLeft) {
-                        isOneSecondLeft = true
-                        Toast.makeText(holder.itemView.context, "세탁이 완료되었습니다", Toast.LENGTH_SHORT).show()
-                        val call = RetrofitClient.instance.endWasherSession(usingid)
-                        call.enqueue(object :
-                            Callback<ApiResponse> {
-                            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                                if (response.isSuccessful && response.body()?.message == true) {
-//                                Toast.makeText(holder.itemView.context, "세탁기 상태가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show()
-//                                currentUsing.washerstatus = "사용 가능"
-
-                                    notifyItemChanged(position)
-                                } else {
-//                                Toast.makeText(holder.itemView.context, "세탁기 상태 업데이트에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-                                    Log.e("WasherUpdateError", "Response Code: ${response.code()} Error Body: ${response.errorBody()?.string()}")
-                                }
-                            }
-
-                            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-//                            Toast.makeText(holder.itemView.context, "네트워크 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show()
-                                Log.e("NetworkError", "Failed to connect to the server", t)
-                            }
-                        })
+                        val timeLeftFormatted = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                        holder.remainingTime.text = timeLeftFormatted
                     }
 
-                    val hours = millisUntilFinished / (1000 * 60 * 60)
-                    val minutes = (millisUntilFinished % (1000 * 60 * 60)) / (1000 * 60)
-                    val seconds = (millisUntilFinished % (1000 * 60)) / 1000
-
-                    val timeLeftFormatted = String.format("%02d:%02d:%02d", hours, minutes, seconds)
-                    Log.d("timeLeftFormatted", holder.usingname.toString()+" "+timeLeftFormatted)
-                    holder.remainingTime.text = timeLeftFormatted
-                }
-
-                override fun onFinish() {
-                    holder.remainingTime.text = ""
-                }
+                    override fun onFinish() {
+                        holder.remainingTime.text = "세탁 완료"
+                        Toast.makeText(holder.itemView.context, "세탁이 완료되었습니다", Toast.LENGTH_SHORT).show()
+                    }
+                }.start()
             }
-        }else{
+        }
+        else{
             holder.remainingTime.text=""
         }
 

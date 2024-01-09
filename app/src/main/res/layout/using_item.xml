@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="39:41 남음"
+        android:text=""
         android:textSize="15sp"
         android:textColor="@color/black"
         android:textAlignment="textEnd"

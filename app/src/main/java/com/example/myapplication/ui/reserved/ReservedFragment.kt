@@ -41,6 +41,8 @@ class ReservedFragment : Fragment() {
     private var rsvForWasherList = mutableListOf<String>()
     private var rsvForDryerList = mutableListOf<String>()
 
+    private var isCanceled: Boolean = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -92,6 +94,7 @@ class ReservedFragment : Fragment() {
 
                     })
             }
+            isCanceled = true
             rsvForWasherList.clear()
         }
 
@@ -114,8 +117,13 @@ class ReservedFragment : Fragment() {
                                 if (washer.washerstatus == "사용중") {
                                     val remainingTime = washer.starttime + washer.settime - System.currentTimeMillis()
 
-                                    object : CountDownTimer(remainingTime, 1000) {
+                                    val timer = object : CountDownTimer(remainingTime, 1000) {
                                         override fun onTick(millisUntilFinished: Long) {
+                                            if (isCanceled) {
+                                                cancel()
+                                                onFinish()
+                                                return
+                                            }
                                             val hours = millisUntilFinished / (1000 * 60 * 60)
                                             val minutes = (millisUntilFinished % (1000 * 60 * 60)) / (1000 * 60)
                                             val seconds = (millisUntilFinished % (1000 * 60)) / 1000
@@ -126,11 +134,14 @@ class ReservedFragment : Fragment() {
 
                                         override fun onFinish() {
                                             washerremaintime.text = ""
+                                            // Add any additional code to handle the finish event
                                         }
-                                    }.start()
+                                    }
+                                    timer.start()
                                 } else {
                                     washerremaintime.text = ""
                                 }
+
 
 
 
