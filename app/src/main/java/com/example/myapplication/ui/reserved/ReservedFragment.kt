@@ -45,13 +45,13 @@ class ReservedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        rsvForWasherList.add("가영")
-        rsvForWasherList.add("firstname")
-        rsvForWasherList.add("나영")
-
-        rsvForDryerList.add("firstname")
-        rsvForDryerList.add("다영")
-        rsvForDryerList.add("라영")
+//        rsvForWasherList.add("가영")
+//        rsvForWasherList.add("firstname")
+//        rsvForWasherList.add("나영")
+//
+//        rsvForDryerList.add("firstname")
+//        rsvForDryerList.add("다영")
+//        rsvForDryerList.add("라영")
 
         _binding = FragmentReservedBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -106,8 +106,42 @@ class ReservedFragment : Fragment() {
                     override fun onResponse(call: Call<List<Washer>>, response: Response<List<Washer>>) {
                         if (response.isSuccessful) {
                             // 성공적으로 데이터를 받아온 경우
-                            response.body()?.let { washers ->
-                                Log.d("ReservedFragment", "Reserved Washers: $washers")
+                            response.body()?.forEach { washer ->
+                                Log.d("ReservedFragment", "Reserved Washers: $washer")
+                                washerid = washer.id
+                                washername.text = washer.washername
+                                washerdorm.text = washer.dorm
+                                washerremaintime.text = ""
+
+                                Log.d("washerid",washerid.toString())
+                                washerid?.let {
+                                    RetrofitClient.instance.getUsernamesByWasher(it)
+                                        .enqueue(object : Callback<List<String>> {
+                                            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+                                                if (response.isSuccessful) {
+                                                    // 성공적으로 데이터를 받아온 경우
+                                                    rsvForWasherList.clear()
+                                                    response.body()?.let { usernames ->
+                                                        rsvForWasherList = usernames.toMutableList()
+                                                        val adapter = userid?.let { ReservationAdapter(usernames, it) }
+                                                        washerrecyclerView.adapter = adapter
+                                                        Log.d("ReservedFragment", "Usernames for Washer $washerid: $usernames")
+                                                        Log.d("rsvForWasherList", rsvForWasherList.toString())
+                                                    }
+                                                } else {
+                                                    // 서버로부터 에러 응답을 받은 경우
+                                                    Log.e("ReservedFragment", "Error: ${response.errorBody()?.string()}")
+                                                }
+                                            }
+
+                                            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                                                // 네트워크 오류 또는 요청 실패
+                                                Log.e("ReservedFragment", "Failed to fetch usernames for washer", t)
+                                            }
+                                        })
+                                }
+                                val adapter = userid?.let { ReservationAdapter(rsvForDryerList, it) }
+                                washerrecyclerView.adapter = adapter
                             }
                         } else {
                             // 서버로부터 에러 응답을 받은 경우
@@ -121,29 +155,13 @@ class ReservedFragment : Fragment() {
                     }
                 })
 
-            val washerId = 1 // 예시로 1을 사용
+//            val washerId = 1 // 예시로 1을 사용
 
-            RetrofitClient.instance.getUsernamesByWasher(washerId)
-                .enqueue(object : Callback<List<String>> {
-                    override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
-                        if (response.isSuccessful) {
-                            // 성공적으로 데이터를 받아온 경우
-                            response.body()?.let { usernames ->
-                                Log.d("ReservedFragment", "Usernames for Washer $washerId: $usernames")
-                            }
-                        } else {
-                            // 서버로부터 에러 응답을 받은 경우
-                            Log.e("ReservedFragment", "Error: ${response.errorBody()?.string()}")
-                        }
-                    }
 
-                    override fun onFailure(call: Call<List<String>>, t: Throwable) {
-                        // 네트워크 오류 또는 요청 실패
-                        Log.e("ReservedFragment", "Failed to fetch usernames for washer", t)
-                    }
-                })
         }
 
+
+        /////////////////////////////////////////
 
         val dryerrecyclerView = root.findViewById<RecyclerView>(R.id.reserved_people_for_dryer)
         dryerrecyclerView.layoutManager = LinearLayoutManager(requireContext())
