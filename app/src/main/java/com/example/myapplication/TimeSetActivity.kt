@@ -38,7 +38,7 @@ class TimeSetActivity : ComponentActivity() {
         return "%02d:%02d".format(minutes, seconds)
     }
 
-    var settime = 0
+    var settime = 60*60
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
