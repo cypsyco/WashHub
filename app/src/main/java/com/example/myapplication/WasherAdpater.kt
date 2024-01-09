@@ -65,11 +65,11 @@ class WasherAdapter(private val washerList: List<Washer>, private val userid: St
                                 if (response.isSuccessful && response.body()?.message == true) {
                                     Toast.makeText(holder.itemView.context, "세탁기 상태가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show()
                                     currentWasher.washerstatus = "사용 가능"
-//                                    TODO("jeon 사용중 테이블 만들어서 시간 끝나면 사용중에서 지우기")
                                     notifyItemChanged(position)
                                 } else {
-                                    Toast.makeText(holder.itemView.context, "세탁기 상태 업데이트에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-                                    Log.e("WasherUpdateError", "Response Code: ${response.code()} Error Body: ${response.errorBody()?.string()}")
+                                    Toast.makeText(holder.itemView.context, "세탁기 상태가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show()
+                                    currentWasher.washerstatus = "예약중"
+                                    notifyItemChanged(position)
                                 }
                             }
 
