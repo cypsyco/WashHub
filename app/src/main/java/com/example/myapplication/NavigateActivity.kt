@@ -92,7 +92,7 @@ class NavigateActivity : AppCompatActivity() {
                                 sideimg.setImageBitmap(decodedBitmap)
 
                                 //Glide 호출까지 완료
-                                Gㅁㄴlide.with(this@NavigateActivity)
+                                Glide.with(this@NavigateActivity)
                                     .load(decodedBitmap)
                                     .into(sideimg)
 
