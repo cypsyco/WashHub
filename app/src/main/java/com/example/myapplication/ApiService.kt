@@ -52,8 +52,8 @@ interface ApiService {
     @GET("/washerReservations/{washerId}")
     fun getWasherReservations(@Path("washerId") washerId: Int): Call<List<String>>
 
-    @GET("/userReservations/{userId}")
-    fun getUserReservations(@Path("userId") userId: String): Call<List<ReservationResponse>>
+//    @GET("/userReservations/{userId}")
+//    fun getUserReservations(@Path("userId") userId: String): Call<List<ReservationResponse>>
 
     @POST("/reserveWasher")
     fun reserveWasher(@Body reservationRequest: ReservationRequest): Call<ApiResponse>
@@ -67,6 +67,8 @@ interface ApiService {
     @POST("/cancelWasherReservation")
     fun cancelWasherReservation(@Body userId: UserId): Call<ApiResponse>
 
+    @GET("/userReservations/{userId}")
+    fun getUserReservations(@Path("userId") userId: String): Call<List<FullReservationResponse>>
 }
 
 data class User(
@@ -83,6 +85,7 @@ data class Washer(
     val id: Int,
     val washername: String,
     var washerstatus: String,
+    val dorm: String,
     val starttime: Long,
     val settime: Long
 )
@@ -114,3 +117,8 @@ data class ReservationResponse(
 data class ReservationRequest(val userid: String, val washerId: Int)
 
 data class UserId(val userid: String)
+
+data class FullReservationResponse(
+    val washer: Washer?,
+    val dryer: Dryer?
+)
