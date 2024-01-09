@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.reserved
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -65,10 +66,6 @@ class ReservedFragment : Fragment() {
         washerrecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val washerBtn = root.findViewById<LinearLayout>(R.id.rsvWasherCard)
-        washerBtn.setOnClickListener{
-            // TODO{"song: 첫번째고 남은 시간이 없으면 사용하기")
-            Toast.makeText(requireContext(),"앞선 대기자가 있습니다.",Toast.LENGTH_SHORT).show()
-        }
         val washername = root.findViewById<TextView>(R.id.rsvWasherName)
         val washerdorm = root.findViewById<TextView>(R.id.rsvWasherdorm)
         val washerremaintime = root.findViewById<TextView>(R.id.rsvWasherTime)
@@ -112,6 +109,30 @@ class ReservedFragment : Fragment() {
                                 washername.text = washer.washername
                                 washerdorm.text = washer.dorm
                                 washerremaintime.text = ""
+
+
+                                if (washer.washerstatus == "사용중") {
+                                    val remainingTime = washer.starttime + washer.settime - System.currentTimeMillis()
+
+                                    object : CountDownTimer(remainingTime, 1000) {
+                                        override fun onTick(millisUntilFinished: Long) {
+                                            val hours = millisUntilFinished / (1000 * 60 * 60)
+                                            val minutes = (millisUntilFinished % (1000 * 60 * 60)) / (1000 * 60)
+                                            val seconds = (millisUntilFinished % (1000 * 60)) / 1000
+
+                                            val timeLeftFormatted = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                                            washerremaintime.text = timeLeftFormatted
+                                        }
+
+                                        override fun onFinish() {
+                                            washerremaintime.text = ""
+                                        }
+                                    }.start()
+                                } else {
+                                    washerremaintime.text = ""
+                                }
+
+
 
                                 Log.d("washerid",washerid.toString())
                                 washerid?.let {

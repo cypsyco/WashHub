@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:text="세탁기 3번"
+                    android:text="-"
                     android:textStyle="bold"
                     android:textSize="20sp"/>
                 <TextView
@@ -62,14 +62,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:textAlignment="center"
-                    android:text="(나래관)"
+                    android:text=""
                     android:textSize="17sp"/>
                 <TextView
                     android:id="@+id/rsvWasherTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:text="01:10:04"/>
+                    android:text=""/>
             </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/reserved_people_for_washer"
@@ -135,7 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:text="건조기 3번"
+                android:text="-"
                 android:textStyle="bold"
                 android:textSize="20sp"/>
             <TextView
@@ -144,14 +144,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:textAlignment="center"
-                android:text="(나래관)"
+                android:text=""
                 android:textSize="17sp"/>
             <TextView
                 android:id="@+id/rsvDryerTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:text="01:10:04"/>
+                android:text=""/>
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/reserved_people_for_dryer"

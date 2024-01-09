@@ -8,6 +8,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
 import me.angrybyte.circularslider.CircularSlider
 import retrofit2.Call
 import retrofit2.Callback
@@ -61,6 +62,12 @@ class TimeSetActivity : ComponentActivity() {
         val timesettext = findViewById<TextView>(R.id.timesetText)
 
         val circularSlider = findViewById<CircularSlider>(R.id.circular)
+
+
+        val greyColor = ContextCompat.getColor(this, R.color.grey)
+        circularSlider.setBorderColor(greyColor)
+
+
         circularSlider.setPosition(1.0/3.0)
 
         circularSlider.setOnSliderMovedListener(object : CircularSlider.OnSliderMovedListener {
