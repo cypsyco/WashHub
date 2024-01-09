@@ -241,24 +241,37 @@ class EditActivity : AppCompatActivity() {
             return
         }
 
-//        TODO("jeon: EditUser query: password가 db에 저장된 password와 같으면 업데이트")
-//        RetrofitClient.instance.registerUser(User(userid, password, username, dormitory, gender, image))
-//            .enqueue(object : Callback<ApiResponse> {
-//                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-//                    if (response.isSuccessful && response.body()?.message == true) {
-//                        Toast.makeText(this@EditActivity, "Save Successful", Toast.LENGTH_SHORT).show()
-//                    } else {
-//                        Toast.makeText(this@EditActivity, "Save Failed", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-//                    Toast.makeText(this@EditActivity, t.message, Toast.LENGTH_SHORT).show()
-//                }
-//            })
+        val updateRequest = UserUpdateRequest(
+            userid = userid ?: "",
+            currentPassword = password,
+            newPassword = newpassword,
+            username = username ?: "",
+            dormitory = dormitory ?: "",
+            gender = gender ?: "",
+            image = encodeImageToBase64(imageView)
+        )
+
+        RetrofitClient.instance.updateUser(updateRequest)
+            .enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                    if (response.isSuccessful && response.body()?.message == true) {
+                        Toast.makeText(this@EditActivity, "User info updated successfully", Toast.LENGTH_SHORT).show()
+                        // 이동 로직
+                    } else {
+                        Toast.makeText(this@EditActivity, "Failed to update user info", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    Toast.makeText(this@EditActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+
+
 
         val intent = Intent(this@EditActivity, NavigateActivity::class.java)
         intent.putExtra("userid", userid)
+        Thread.sleep(500)
         startActivity(intent)
         finish()
     }
