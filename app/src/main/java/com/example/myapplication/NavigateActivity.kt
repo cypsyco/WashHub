@@ -38,7 +38,7 @@ class NavigateActivity : AppCompatActivity() {
     private var password: String? = null
     private var username: String? = null
     private var dormitory: String? = null
-    private var gender: String? = "true"
+    private var gender: String? = null
     private var image: String? = null
 
     @SuppressLint("ResourceType")
@@ -65,8 +65,9 @@ class NavigateActivity : AppCompatActivity() {
         val sidename = headerView.findViewById<TextView>(R.id.sidename_tv)
         val sidedorm = headerView.findViewById<TextView>(R.id.sidedorm_tv)
         val sideimg = headerView.findViewById<CircleImageView>(R.id.headerimageView)
+        val sideeditbtn = headerView.findViewById<ImageButton>(R.id.editBtn)
 
-        userid = intent.getStringExtra("userid")
+        userid = intent.getStringExtra("userid")//?:"asdf"
 
         //사용자 정보 불러오기
         userid?.let {
@@ -111,6 +112,11 @@ class NavigateActivity : AppCompatActivity() {
         }
 
 
+        val toolbardormText = intent.getStringExtra("toolbardormText")
+        Log.d("toolbardormText", "Navreceived ${toolbardormText}")
+        toolbardorm.text = toolbardormText
+        Log.d("toolbardormText", "toolbar ${toolbardorm.text}")
+
         val navController = findNavController(R.id.nav_host_fragment_content_navigate)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -134,6 +140,12 @@ class NavigateActivity : AppCompatActivity() {
                 else -> getString(R.string.app_name)
             }
             title.text = navtitle
+        }
+
+        sideeditbtn.setOnClickListener{
+            val intent = Intent(this, EditActivity::class.java)
+            intent.putExtra("userid", userid)
+            startActivity(intent)
         }
 
         toolbardorm.setOnClickListener{
@@ -187,6 +199,10 @@ class NavigateActivity : AppCompatActivity() {
 
     fun getToolbarDormText(): String {
         return binding.appBarNavigate.toolbar.findViewById<TextView>(R.id.toolbarDorm).text.toString()
+    }
+
+    fun getToolbarDorm(): TextView {
+        return binding.appBarNavigate.toolbar.findViewById<TextView>(R.id.toolbarDorm)
     }
 
     fun getUserId(): String? {

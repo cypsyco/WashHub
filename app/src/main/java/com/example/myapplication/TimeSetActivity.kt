@@ -47,6 +47,7 @@ class TimeSetActivity : ComponentActivity() {
         val receivedWasherName = intent.getStringExtra("washername")
         val receivedWasherId = intent.getIntExtra("washerid", -1)
         val userid = intent.getStringExtra("userid")
+        val toolbardormText = intent.getStringExtra("toolbardormText")
 
         val toolbartitle = findViewById<TextView>(R.id.toolBarTitle)
         toolbartitle.text = receivedWasherName
@@ -98,6 +99,7 @@ class TimeSetActivity : ComponentActivity() {
 
             val intent = Intent(this@TimeSetActivity, WashersActivity::class.java)
             intent.putExtra("userid", userid)
+            intent.putExtra("toolbardormText",toolbardormText)
             startActivity(intent)
             finish()
         }

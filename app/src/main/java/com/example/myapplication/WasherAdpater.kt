@@ -23,7 +23,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
 
-class WasherAdapter(private val washerList: List<Washer>, private val userid: String) : RecyclerView.Adapter<WasherAdapter.WasherViewHolder>() {
+class WasherAdapter(private val washerList: List<Washer>, private val userid: String, private val toolbardormText: String) : RecyclerView.Adapter<WasherAdapter.WasherViewHolder>() {
 
     class WasherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val washername: TextView = itemView.findViewById(R.id.txtWasherName)
@@ -116,7 +116,8 @@ class WasherAdapter(private val washerList: List<Washer>, private val userid: St
                     intent.putExtra("washername",currentWasher.washername)
                     intent.putExtra("washerid", currentWasher.id)
                     intent.putExtra("userid", userid)
-                    ContextCompat.startActivity(holder.itemView.context, intent, null)
+                    intent.putExtra("toolbardormText",toolbardormText)
+                    startActivity(holder.itemView.context, intent, null)
                 }
                 "사용중" -> {
                     reserveDialog(holder.itemView.context, currentWasher.washername, currentWasher.id, userid)

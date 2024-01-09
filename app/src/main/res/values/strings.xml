@@ -14,4 +14,5 @@
     <string name="menu_select">시설물</string>
     <string name="menu_using">사용중 및 예약 현황</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="title_activity_edit">EditActivity</string>
 </resources>
