@@ -144,7 +144,7 @@ class ReservedFragment : Fragment() {
                                                     rsvForWasherList.clear()
                                                     response.body()?.let { usernames ->
                                                         rsvForWasherList = usernames.toMutableList()
-                                                        val adapter = userid?.let { ReservationAdapter(usernames, it) }
+                                                        val adapter = userid?.let { ReservationAdapter(rsvForWasherList, it) }
                                                         washerrecyclerView.adapter = adapter
                                                         Log.d("ReservedFragment", "Usernames for Washer $washerid: $usernames")
                                                         Log.d("rsvForWasherList", rsvForWasherList.toString())

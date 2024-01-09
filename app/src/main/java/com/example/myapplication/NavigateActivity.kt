@@ -30,6 +30,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+public var publicDorm: String = ""
+
 class NavigateActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -86,6 +88,7 @@ class NavigateActivity : AppCompatActivity() {
                                 sidename.text = username + "님"
                                 sidedorm.text = dormitory
                                 toolbardorm.text = dormitory
+                                publicDorm = dormitory as String
                                 val decodedBytes = Base64.decode(image, Base64.DEFAULT)
                                 val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.size)
 
@@ -171,6 +174,7 @@ class NavigateActivity : AppCompatActivity() {
                         val newdorm = if (gender == "남자") "사랑관" else "아름관"
                         toolbardorm.text = newdorm
                         sidedorm.text = newdorm
+                        publicDorm = newdorm
 //                        TODO("{userid}의 기숙사 선택하는 걸로{toolbardorm.text} db dorm 업데이트")
                         true
                     }
@@ -179,6 +183,7 @@ class NavigateActivity : AppCompatActivity() {
                         val newdorm = if (gender == "남자") "소망관" else "나래관"
                         toolbardorm.text = newdorm
                         sidedorm.text = newdorm
+                        publicDorm = newdorm
 //                        TODO("{userid}의 기숙사 선택하는 걸로{toolbardorm.text} db dorm 업데이트")
                         true
                     }
