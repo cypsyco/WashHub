@@ -39,7 +39,7 @@ class UsingWasherAdapter(private val usingList: List<Washer>) : RecyclerView.Ada
     override fun onBindViewHolder(holder: UsingViewHolder, position: Int) {
         val currentUsing = usingList[position]
         holder.usingname.text = currentUsing.washername
-        holder.dorm.text = usingList[position].dorm
+        holder.dorm.text = "("+usingList[position].dorm+")"
         val usingid = currentUsing.id
 
 
