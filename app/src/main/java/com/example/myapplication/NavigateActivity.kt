@@ -23,6 +23,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
+import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ActivityNavigateBinding
 import de.hdodenhof.circleimageview.CircleImageView
 import retrofit2.Call
@@ -89,9 +90,13 @@ class NavigateActivity : AppCompatActivity() {
                                 val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.size)
 
                                 sideimg.setImageBitmap(decodedBitmap)
-//                                Glide.with(this)
-//                                    .load(decodedBitmap)
-//                                    .into(sideimg)
+
+                                //Glide 호출까지 완료
+                                Gㅁㄴlide.with(this@NavigateActivity)
+                                    .load(decodedBitmap)
+                                    .into(sideimg)
+
+
                                 Log.d("responsesuccessful in SelectScreen", user.toString())
                                 Toast.makeText(this@NavigateActivity, username, Toast.LENGTH_SHORT).show()
 
