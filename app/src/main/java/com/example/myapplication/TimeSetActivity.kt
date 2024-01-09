@@ -97,6 +97,22 @@ class TimeSetActivity : ComponentActivity() {
                 })
             }
 
+            //예약 명단에서 없애기
+            val cancelCall = userid?.let { RetrofitClient.instance.cancelWasherReservation(UserId(it)) }
+            cancelCall?.enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                    if (response.isSuccessful && response.body()?.message == true) {
+                        // Handle successful washer reservation cancellation
+                    } else {
+                        // Handle failure in washer reservation cancellation
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    Log.e("TimeSetActivity", "Cancel reservation call failed: ${t.message}")
+                }
+            })
+
             val intent = Intent(this@TimeSetActivity, WashersActivity::class.java)
             intent.putExtra("userid", userid)
             intent.putExtra("toolbardormText",toolbardormText)

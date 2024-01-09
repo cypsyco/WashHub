@@ -64,6 +64,9 @@ interface ApiService {
     @GET("/washersByUser/{userid}")
     fun getDryersByUser(@Path("userid") userid: String): Call<List<Dryer>>
 
+    @POST("/cancelWasherReservation")
+    fun cancelWasherReservation(@Body userId: UserId): Call<ApiResponse>
+
 }
 
 data class User(
@@ -110,3 +113,4 @@ data class ReservationResponse(
 
 data class ReservationRequest(val userid: String, val washerId: Int)
 
+data class UserId(val userid: String)
