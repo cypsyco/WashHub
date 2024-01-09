@@ -25,6 +25,7 @@ class WashersActivity : AppCompatActivity() {
     private var dormitory: String? = null
     private var gender: String? = "true"
     private var image: String? = null
+    private var toolbardormText: String? = null
 
     private lateinit var toolbardorm:TextView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,13 +36,15 @@ class WashersActivity : AppCompatActivity() {
         toolbartitle.text = "세탁기"
 
         userid = intent.getStringExtra("userid")
-        val toolbardormText = intent.getStringExtra("toolbardormText")
+        toolbardormText = intent.getStringExtra("toolbardormText").toString()
+        Log.d("toolbardormText",toolbardormText.toString())
 
         val backbtn = findViewById<ImageButton>(R.id.toolBarBtn)
         backbtn.setOnClickListener {
             val intent = Intent(this, NavigateActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             intent.putExtra("userid",userid)
+            intent.putExtra("toolbardormText", toolbardormText)
             startActivity(intent)
             finish()
         }
@@ -79,39 +82,41 @@ class WashersActivity : AppCompatActivity() {
 //            Toast.makeText(this, "User ID is null", Toast.LENGTH_SHORT).show()
 //        }
 
-        toolbardorm.setOnClickListener{
-            val popup = PopupMenu(this, toolbardorm)
-            popup.menuInflater.inflate(R.menu.navigate, popup.menu)
-            if (gender=="남자") {
-                popup.menu?.findItem(R.id.action_settings)?.title = "사랑관"
-                popup.menu?.findItem(R.id.action_settings2)?.title = "소망관"
-            } else {
-                popup.menu?.findItem(R.id.action_settings)?.title = "아름관"
-                popup.menu?.findItem(R.id.action_settings2)?.title = "나래관"
-            }
-
-            popup.setOnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.action_settings -> {
-                        // 메뉴 아이템 클릭 시 동작할 내용 작성
-                        val newdorm = if (gender == "남자") "사랑관" else "아름관"
-                        toolbardorm.text = newdorm
-//                        TODO("{userid}의 기숙사 선택하는 걸로{toolbardorm.text} db dorm 업데이트")
-                        true
-                    }
-                    R.id.action_settings2 -> {
-                        // 다른 메뉴 아이템에 대한 동작
-                        val newdorm = if (gender == "남자") "소망관" else "나래관"
-                        toolbardorm.text = newdorm
-//                        TODO("{userid}의 기숙사 선택하는 걸로{toolbardorm.text} db dorm 업데이트")
-                        true
-                    }
-                    // 추가적인 메뉴 아이템 핸들링 가능
-                    else -> false
-                }
-            }
-            popup.show()
-        }
+//        toolbardorm.setOnClickListener{
+//            val popup = PopupMenu(this, toolbardorm)
+//            popup.menuInflater.inflate(R.menu.navigate, popup.menu)
+//            if (gender=="남자") {
+//                popup.menu?.findItem(R.id.action_settings)?.title = "사랑관"
+//                popup.menu?.findItem(R.id.action_settings2)?.title = "소망관"
+//            } else {
+//                popup.menu?.findItem(R.id.action_settings)?.title = "아름관"
+//                popup.menu?.findItem(R.id.action_settings2)?.title = "나래관"
+//            }
+//
+//            popup.setOnMenuItemClickListener { item ->
+//                when (item.itemId) {
+//                    R.id.action_settings -> {
+//                        // 메뉴 아이템 클릭 시 동작할 내용 작성
+//                        val newdorm = if (gender == "남자") "사랑관" else "아름관"
+//                        toolbardorm.text = newdorm
+//                        toolbardormText = newdorm
+////                        TODO("{userid}의 기숙사 선택하는 걸로{toolbardorm.text} db dorm 업데이트")
+//                        true
+//                    }
+//                    R.id.action_settings2 -> {
+//                        // 다른 메뉴 아이템에 대한 동작
+//                        val newdorm = if (gender == "남자") "소망관" else "나래관"
+//                        toolbardorm.text = newdorm
+//                        toolbardormText = newdorm
+////                        TODO("{userid}의 기숙사 선택하는 걸로{toolbardorm.text} db dorm 업데이트")
+//                        true
+//                    }
+//                    // 추가적인 메뉴 아이템 핸들링 가능
+//                    else -> false
+//                }
+//            }
+//            popup.show()
+//        }
 
         val recyclerView = findViewById<RecyclerView>(R.id.washers)
 
@@ -122,7 +127,7 @@ class WashersActivity : AppCompatActivity() {
             "소망관" -> RetrofitClient.instance.getWashersDorm2()
             "아름관" -> RetrofitClient.instance.getWashersDorm3()
             "나래관" -> RetrofitClient.instance.getWashersDorm4()
-            else -> RetrofitClient.instance.getWashers() // 기본값ㅁㄴ
+            else -> RetrofitClient.instance.getWashers() // 기본값
         }
 
         call.enqueue(object : Callback<List<Washer>> {
@@ -160,7 +165,7 @@ class WashersActivity : AppCompatActivity() {
         val intent = Intent(this, NavigateActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         intent.putExtra("userid",userid)
-        intent.putExtra("toolbardormText", toolbardorm.text)
+        intent.putExtra("toolbardormText", toolbardormText)
         startActivity(intent)
         finish()
     }

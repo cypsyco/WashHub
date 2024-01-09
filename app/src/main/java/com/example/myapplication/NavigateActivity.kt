@@ -111,6 +111,12 @@ class NavigateActivity : AppCompatActivity() {
             Toast.makeText(this, "User ID is null", Toast.LENGTH_SHORT).show()
         }
 
+
+        val toolbardormText = intent.getStringExtra("toolbardormText")
+        Log.d("toolbardormText", "Navreceived ${toolbardormText}")
+        toolbardorm.text = toolbardormText
+        Log.d("toolbardormText", "toolbar ${toolbardorm.text}")
+
         val navController = findNavController(R.id.nav_host_fragment_content_navigate)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
