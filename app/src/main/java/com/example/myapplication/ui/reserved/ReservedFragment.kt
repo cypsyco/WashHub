@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.ApiResponse
 import com.example.myapplication.Dryer
-import com.example.myapplication.FullReservationResponse
 import com.example.myapplication.NavigateActivity
 import com.example.myapplication.R
 import com.example.myapplication.ReservationAdapter
@@ -99,67 +98,52 @@ class ReservedFragment : Fragment() {
             rsvForWasherList.clear()
         }
 
-//        TODO("userid넘겨주면 예약중인 세탁기 정보 다 받아오기")
-//        if (userid != null) {
-//            RetrofitClient.instance.getUserReservations(userid)     // user가 예약하고 있는 세탁기 정보 받아서
-//                .enqueue(object : Callback<List<FullReservationResponse>> {
-//                    override fun onResponse(
-//                        call: Call<List<FullReservationResponse>>,
-//                        response: Response<List<FullReservationResponse>>
-//                    ) {
-//                        if (response.isSuccessful) {
-//                            response.body()?.get(0)?.let {
-//                                Log.d("response for getWashersByUser", response.body().toString())
-//                                it.washer?.let { it1 ->
-//                                    washerid = it1.id.toInt()
-//                                    washername.text = it1.washername
-//                                    washerdorm.text = it1.dorm
-//                                }
-//                            }
-//                        } else {
-//                            Log.e(
-//                                "ReserveDialog",
-//                                "서버 응답 실패: ${response.code()} - ${response.errorBody()?.string()}"
-//                            )
-//                            Toast.makeText(context, "예약 목록을 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<List<FullReservationResponse>>, t: Throwable) {
-//                        Toast.makeText(context, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
-//                    }
-//                })
-//        }
-//        washerid?.let {
-//            RetrofitClient.instance.getWasherReservations(it)   // 여기에 전달 -> 해당 세탁기 이용하고 있는 모든 이용자 정보 리사이클러뷰에 띄움
-//                .enqueue(object : Callback<List<String>> {
-//                    override fun onResponse(
-//                        call: Call<List<String>>,
-//                        response: Response<List<String>>
-//                    ) {
-//                        if (response.isSuccessful) {
-//                            rsvForWasherList.clear()
-//                            rsvForWasherList.addAll(response.body() ?: emptyList())
-//                            washerrecyclerView.adapter?.notifyDataSetChanged()
-//                        } else {
-//                            Log.e(
-//                                "ReserveDialog",
-//                                "서버 응답 실패: ${response.code()} - ${response.errorBody()?.string()}"
-//                            )
-//                            Toast.makeText(context, "예약 목록을 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<List<String>>, t: Throwable) {
-//                        Toast.makeText(context, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
-//                    }
-//                })
-//        }
-//
-//        val adapter = userid?.let { ReservationAdapter(rsvForWasherList, it) }
-//        washerrecyclerView.adapter = adapter
+        //write code here
+        userid?.let { userId ->
+            // 사용자가 예약한 세탁기의 모든 정보 조회
+            RetrofitClient.instance.getWasherReservationsByUser(userId)
+                .enqueue(object : Callback<List<Washer>> {
+                    override fun onResponse(call: Call<List<Washer>>, response: Response<List<Washer>>) {
+                        if (response.isSuccessful) {
+                            // 성공적으로 데이터를 받아온 경우
+                            response.body()?.let { washers ->
+                                Log.d("ReservedFragment", "Reserved Washers: $washers")
+                            }
+                        } else {
+                            // 서버로부터 에러 응답을 받은 경우
+                            Log.e("ReservedFragment", "Error: ${response.errorBody()?.string()}")
+                        }
+                    }
 
-        ///////////////////////////////////////////////
+                    override fun onFailure(call: Call<List<Washer>>, t: Throwable) {
+                        // 네트워크 오류 또는 요청 실패
+                        Log.e("ReservedFragment", "Failed to fetch reserved washers", t)
+                    }
+                })
+
+            val washerId = 1 // 예시로 1을 사용
+
+            RetrofitClient.instance.getUsernamesByWasher(washerId)
+                .enqueue(object : Callback<List<String>> {
+                    override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+                        if (response.isSuccessful) {
+                            // 성공적으로 데이터를 받아온 경우
+                            response.body()?.let { usernames ->
+                                Log.d("ReservedFragment", "Usernames for Washer $washerId: $usernames")
+                            }
+                        } else {
+                            // 서버로부터 에러 응답을 받은 경우
+                            Log.e("ReservedFragment", "Error: ${response.errorBody()?.string()}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                        // 네트워크 오류 또는 요청 실패
+                        Log.e("ReservedFragment", "Failed to fetch usernames for washer", t)
+                    }
+                })
+        }
+
 
         val dryerrecyclerView = root.findViewById<RecyclerView>(R.id.reserved_people_for_dryer)
         dryerrecyclerView.layoutManager = LinearLayoutManager(requireContext())

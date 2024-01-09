@@ -70,8 +70,11 @@ interface ApiService {
     @POST("/updateUser")
     fun updateUser(@Body updateRequest: UserUpdateRequest): Call<ApiResponse>
 
-    @GET("/userReservations/{userId}")
-    fun getUserReservations(@Path("userId") userId: String): Call<List<FullReservationResponse>>
+    @GET("/washerReservationsByUser/{userid}")
+    fun getWasherReservationsByUser(@Path("userid") userid: String): Call<List<Washer>>
+
+    @GET("/usernamesByWasher/{washerId}")
+    fun getUsernamesByWasher(@Path("washerId") washerId: Int): Call<List<String>>
 }
 
 data class User(
@@ -116,12 +119,6 @@ data class ReservationResponse(
     val washername: String?,
     val dryername: String?
 )
-
-data class FullReservationResponse(
-    val washer: Washer?,
-    val dryer: Dryer?
-)
-
 
 data class ReservationRequest(val userid: String, val washerId: Int)
 
