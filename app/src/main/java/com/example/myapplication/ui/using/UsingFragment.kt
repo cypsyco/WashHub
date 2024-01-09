@@ -1,25 +1,18 @@
 package com.example.myapplication.ui.using
 
-import android.graphics.Color
 import android.os.Bundle
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Dryer
 import com.example.myapplication.NavigateActivity
 import com.example.myapplication.R
-import com.example.myapplication.ReservationResponse
 import com.example.myapplication.RetrofitClient
 import com.example.myapplication.Washer
-import com.example.myapplication.WasherAdapter
 import com.example.myapplication.databinding.FragmentUsingBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,7 +26,8 @@ class UsingFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private var usingList = mutableListOf<Washer>()
+    private var usingWasherList = mutableListOf<Washer>()
+    private var usingDryerList = mutableListOf<Dryer>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +38,7 @@ class UsingFragment : Fragment() {
         _binding = FragmentUsingBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val recyclerView = root.findViewById<RecyclerView>(R.id.usings)
+        val recyclerView = root.findViewById<RecyclerView>(R.id.using_washers)
         val layoutManager = LinearLayoutManager(requireContext())
 
         val navigateActivity = activity as? NavigateActivity
@@ -67,10 +61,10 @@ class UsingFragment : Fragment() {
                     if (response.isSuccessful) {
                         val fetchedList = response.body()
                         fetchedList?.let {
-                            usingList.clear()
-                            usingList.addAll(it)
+                            usingWasherList.clear()
+                            usingWasherList.addAll(it)
                         }
-                        Log.d("UsingList", usingList.toString())
+                        Log.d("UsingList", usingWasherList.toString())
                         recyclerView.adapter?.notifyDataSetChanged()
                     } else {
                         // 실패 시 처리
@@ -84,7 +78,38 @@ class UsingFragment : Fragment() {
         }
 
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = UsingAdapter(usingList)
+        recyclerView.adapter = UsingWasherAdapter(usingWasherList)
+
+        val recyclerView2 = root.findViewById<RecyclerView>(R.id.using_dryers)
+        val layoutManager2 = LinearLayoutManager(requireContext())
+
+        // 'UsingFragment' 클래스 내부
+        if (userid != null) {
+            val call2: Call<List<Dryer>> = RetrofitClient.instance.getDryersByUser(userid)
+
+            call2.enqueue(object : Callback<List<Dryer>> {
+                override fun onResponse(call: Call<List<Dryer>>, response: Response<List<Dryer>>) {
+                    if (response.isSuccessful) {
+                        val fetchedList = response.body()
+                        fetchedList?.let {
+                            usingDryerList.clear()
+                            usingDryerList.addAll(it)
+                        }
+                        Log.d("UsingList", usingDryerList.toString())
+                        recyclerView.adapter?.notifyDataSetChanged()
+                    } else {
+                        // 실패 시 처리
+                        Log.d("UsingList", "Response not successful")
+                    }
+                }
+                override fun onFailure(call: Call<List<Dryer>>, t: Throwable) {
+//                    TODO("Not yet implemented")
+                }
+            })
+        }
+
+        recyclerView2.layoutManager = layoutManager2
+        recyclerView2.adapter = UsingDryerAdapter(usingDryerList)
 
 //        val call: Call<List<Washer>> = RetrofitClient.instance.getWashers()
 //
@@ -134,33 +159,28 @@ class UsingFragment : Fragment() {
 //            }
 //        })
 
-        val mywasher = root.findViewById<TextView>(R.id.myWasher)
-        val mydryer = root.findViewById<TextView>(R.id.myDryer)
-
-        if (userid != null) {
-            RetrofitClient.instance.getUserReservations(userid).enqueue(object : Callback<List<ReservationResponse>> {
-                override fun onResponse(call: Call<List<ReservationResponse>>, response: Response<List<ReservationResponse>>) {
-                    if (response.isSuccessful) {
-                        val fetchedList = response.body()
-                        fetchedList?.forEach { using->
-                            mywasher.text = using.washername?: "-"
-                            mydryer.text = using.dryername?: "-"
-                        }
-                    } else {
-                        // 실패 시 처리
-                    }
-                }
-
-                override fun onFailure(call: Call<List<ReservationResponse>>, t: Throwable) {
-//                    TODO("Not yet implemented")
-                }
-            })
-        }
-
-
-
-
-
+//        val mywasher = root.findViewById<TextView>(R.id.myWasher)
+//        val mydryer = root.findViewById<TextView>(R.id.myDryer)
+//
+//        if (userid != null) {
+//            RetrofitClient.instance.getUserReservations(userid).enqueue(object : Callback<List<ReservationResponse>> {
+//                override fun onResponse(call: Call<List<ReservationResponse>>, response: Response<List<ReservationResponse>>) {
+//                    if (response.isSuccessful) {
+//                        val fetchedList = response.body()
+//                        fetchedList?.forEach { using->
+//                            mywasher.text = using.washername?: "-"
+//                            mydryer.text = using.dryername?: "-"
+//                        }
+//                    } else {
+//                        // 실패 시 처리
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<List<ReservationResponse>>, t: Throwable) {
+////                    TODO("Not yet implemented")
+//                }
+//            })
+//        }
         return root
     }
 
