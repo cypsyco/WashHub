@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context=".ui.reserved.ReservedFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="예약중인 세탁기"
+            android:textAlignment="viewStart"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/washerClearbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="예약 취소"
+            android:textAlignment="viewEnd"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:clickable="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/rsvWasherCard"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:background="@drawable/background_img_1"
+                android:backgroundTint="@color/lightblue"
+                android:layout_weight="7"
+                android:clickable="true">
+                <TextView
+                    android:id="@+id/rsvWasherName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="세탁기 3번"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/rsvWasherdorm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:textAlignment="center"
+                    android:text="(나래관)"
+                    android:textSize="17sp"/>
+                <TextView
+                    android:id="@+id/rsvWasherTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="01:10:04"/>
+            </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reserved_people_for_washer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:layout_gravity="center"
+            android:paddingStart="15dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/reserved_item" />
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="예약중인 세탁기"
+            android:textAlignment="viewStart"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/dryerClearbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="예약 취소"
+            android:textAlignment="viewEnd"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:clickable="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/rsvDryerCard"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:background="@drawable/background_img_1"
+            android:backgroundTint="@color/lightblue"
+            android:layout_weight="7"
+            android:clickable="true">
+            <TextView
+                android:id="@+id/rsvDryerName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="건조기 3번"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/rsvDryerdorm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:textAlignment="center"
+                android:text="(나래관)"
+                android:textSize="17sp"/>
+            <TextView
+                android:id="@+id/rsvDryerTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="01:10:04"/>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reserved_people_for_dryer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:layout_gravity="center"
+            android:paddingStart="15dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/reserved_item" />
+    </LinearLayout>
+
+</LinearLayout>

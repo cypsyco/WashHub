@@ -100,11 +100,14 @@ class WasherAdapter(private val washerList: List<Washer>, private val userid: St
 
 
 
-        if (currentWasher.washerstatus.trim() != "사용 가능"){
-            holder.btnAction.setBackgroundColor(ContextCompat.getColor(holder.btnAction.context,R.color.red))
+        if (currentWasher.washerstatus.trim() == "사용 가능"){
+            holder.btnAction.setBackgroundColor(ContextCompat.getColor(holder.btnAction.context,R.color.blue))
+            Log.d("Washerstatus",currentWasher.washerstatus+""+R.color.red.toString())
+        }else if(currentWasher.washerstatus.trim() == "예약중"){
+            holder.btnAction.setBackgroundColor(ContextCompat.getColor(holder.btnAction.context,R.color.yellow))
             Log.d("Washerstatus",currentWasher.washerstatus+""+R.color.red.toString())
         }else{
-            holder.btnAction.setBackgroundColor(ContextCompat.getColor(holder.btnAction.context,R.color.blue))
+            holder.btnAction.setBackgroundColor(ContextCompat.getColor(holder.btnAction.context,R.color.red))
             Log.d("Washerstatus",currentWasher.washerstatus+""+R.color.blue.toString())
         }
 
@@ -184,7 +187,7 @@ class WasherAdapter(private val washerList: List<Washer>, private val userid: St
                 }
             })
 
-        val adapter = ReservationAdapter(reservedlist)
+        val adapter = ReservationAdapter(reservedlist, userid)
         recyclerView.adapter = adapter
 
         val addbtn = dialog.findViewById<ImageButton>(R.id.addBtn)

@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.ApiResponse
+import com.example.myapplication.Dryer
 import com.example.myapplication.R
 import com.example.myapplication.RetrofitClient
 import com.example.myapplication.Washer
@@ -20,7 +21,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UsingAdapter(private val usingList: List<Washer>) : RecyclerView.Adapter<UsingAdapter.UsingViewHolder>() {
+class UsingDryerAdapter(private val usingList: List<Dryer>) : RecyclerView.Adapter<UsingDryerAdapter.UsingViewHolder>() {
 
     class UsingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val usingname: TextView = itemView.findViewById(R.id.txtUsingName)
@@ -38,7 +39,7 @@ class UsingAdapter(private val usingList: List<Washer>) : RecyclerView.Adapter<U
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: UsingViewHolder, position: Int) {
         val currentUsing = usingList[position]
-        holder.usingname.text = currentUsing.washername
+        holder.usingname.text = currentUsing.dryername
         holder.dorm.text = "(사랑관)"  //TODO("기숙사이름 알맞게")
         val usingid = currentUsing.id
 
@@ -53,26 +54,26 @@ class UsingAdapter(private val usingList: List<Washer>) : RecyclerView.Adapter<U
                     if (millisUntilFinished <= 1000 && !isOneSecondLeft) {
                         isOneSecondLeft = true
                         Toast.makeText(holder.itemView.context, "세탁이 완료되었습니다", Toast.LENGTH_SHORT).show()
-                        val call = if (usingid<1000)RetrofitClient.instance.endWasherSession(usingid) else{RetrofitClient.instance.endWasherSession(usingid)}   // TODO("else일 때 endDryerSession 으로 바꾸기")
-                        call.enqueue(object :
-                            Callback<ApiResponse> {
-                            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                                if (response.isSuccessful && response.body()?.message == true) {
-//                                Toast.makeText(holder.itemView.context, "세탁기 상태가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show()
-//                                currentUsing.washerstatus = "사용 가능"
-
-                                    notifyItemChanged(position)
-                                } else {
-//                                Toast.makeText(holder.itemView.context, "세탁기 상태 업데이트에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-                                    Log.e("WasherUpdateError", "Response Code: ${response.code()} Error Body: ${response.errorBody()?.string()}")
-                                }
-                            }
-
-                            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-//                            Toast.makeText(holder.itemView.context, "네트워크 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show()
-                                Log.e("NetworkError", "Failed to connect to the server", t)
-                            }
-                        })
+//                        val call = RetrofitClient.instance.enddryerSession(usingid)
+//                        call.enqueue(object :
+//                            Callback<ApiResponse> {
+//                            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+//                                if (response.isSuccessful && response.body()?.message == true) {
+////                                Toast.makeText(holder.itemView.context, "세탁기 상태가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show()
+////                                currentUsing.washerstatus = "사용 가능"
+//
+//                                    notifyItemChanged(position)
+//                                } else {
+////                                Toast.makeText(holder.itemView.context, "세탁기 상태 업데이트에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+//                                    Log.e("WasherUpdateError", "Response Code: ${response.code()} Error Body: ${response.errorBody()?.string()}")
+//                                }
+//                            }
+//
+//                            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+////                            Toast.makeText(holder.itemView.context, "네트워크 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+//                                Log.e("NetworkError", "Failed to connect to the server", t)
+//                            }
+//                        })
                     }
 
                     val hours = millisUntilFinished / (1000 * 60 * 60)
