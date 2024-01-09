@@ -59,6 +59,7 @@ class SelectFragment : Fragment() {
         }
 
 
+        Log.d("publicDorm", publicDorm)
         call.enqueue(object : Callback<List<Washer>> {
             override fun onResponse(call: Call<List<Washer>>, response: Response<List<Washer>>) {
                 if (response.isSuccessful) {
@@ -69,7 +70,12 @@ class SelectFragment : Fragment() {
                         if (it.washerstatus == "사용 가능"){
                             availableNum+=1
                         }
+
+                        Log.d("num","( ${availableNum} / ${allNum} )" )
                     }
+                    Log.d("num","( ${availableNum} / ${allNum} )" )
+                    val howmany = root.findViewById<TextView>(R.id.howManyAvailableWasher)
+                    howmany.text = "( ${availableNum} / ${allNum} )"
                 } else {
                     // 실패 시 처리
                 }
@@ -79,9 +85,6 @@ class SelectFragment : Fragment() {
                 Log.e("WasherList", "Failed: ${t.message}")
             }
         })
-
-        val howmany = root.findViewById<TextView>(R.id.howManyAvailableWasher)
-        howmany.text = "( ${availableNum} / ${allNum} )"
 
         val buttonWasher = root.findViewById<CardView>(R.id.select_washer)
         val buttonDryer = root.findViewById<CardView>(R.id.select_dryer)

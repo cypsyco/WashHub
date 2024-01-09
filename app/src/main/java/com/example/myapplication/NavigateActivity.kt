@@ -70,6 +70,10 @@ class NavigateActivity : AppCompatActivity() {
         val sideimg = headerView.findViewById<CircleImageView>(R.id.headerimageView)
         val sideeditbtn = headerView.findViewById<ImageButton>(R.id.editBtn)
 
+        val toolbardormText = intent.getStringExtra("toolbardormText")
+        publicDorm = toolbardormText.toString()
+        howManyWashersAvailable()
+//        TODO("로그인 이후 첫 화면 전체 세탁기 기준 개수 세어짐")
         userid = intent.getStringExtra("userid")//?:"asdf"
 
         //사용자 정보 불러오기
@@ -89,6 +93,8 @@ class NavigateActivity : AppCompatActivity() {
                                 sidedorm.text = dormitory
                                 toolbardorm.text = dormitory
                                 publicDorm = dormitory as String
+
+                                Log.d("publicDorm", publicDorm)
                                 val decodedBytes = Base64.decode(image, Base64.DEFAULT)
                                 val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.size)
 
@@ -120,7 +126,7 @@ class NavigateActivity : AppCompatActivity() {
         }
 
 
-        val toolbardormText = intent.getStringExtra("toolbardormText")
+
         Log.d("toolbardormText", "Navreceived ${toolbardormText}")
         toolbardorm.text = toolbardormText
         Log.d("toolbardormText", "toolbar ${toolbardorm.text}")
@@ -175,6 +181,9 @@ class NavigateActivity : AppCompatActivity() {
                         toolbardorm.text = newdorm
                         sidedorm.text = newdorm
                         publicDorm = newdorm
+                        howManyWashersAvailable()
+
+                        Log.d("publicDorm", publicDorm)
 //                        TODO("{userid}의 기숙사 선택하는 걸로{toolbardorm.text} db dorm 업데이트")
                         true
                     }
@@ -184,6 +193,9 @@ class NavigateActivity : AppCompatActivity() {
                         toolbardorm.text = newdorm
                         sidedorm.text = newdorm
                         publicDorm = newdorm
+                        howManyWashersAvailable()
+
+                        Log.d("publicDorm", publicDorm)
 //                        TODO("{userid}의 기숙사 선택하는 걸로{toolbardorm.text} db dorm 업데이트")
                         true
                     }
@@ -217,5 +229,47 @@ class NavigateActivity : AppCompatActivity() {
 
     fun getUserId(): String? {
         return userid
+    }
+
+    fun howManyWashersAvailable(){
+
+        var allNum = 0
+        var availableNum = 0
+
+        val call: Call<List<Washer>> = when (publicDorm) {
+            "사랑관" -> RetrofitClient.instance.getWashersDorm1()
+            "소망관" -> RetrofitClient.instance.getWashersDorm2()
+            "아름관" -> RetrofitClient.instance.getWashersDorm3()
+            "나래관" -> RetrofitClient.instance.getWashersDorm4()
+            else -> RetrofitClient.instance.getWashers() // 기본값
+        }
+
+
+        Log.d("publicDorm", publicDorm)
+        call.enqueue(object : Callback<List<Washer>> {
+            override fun onResponse(call: Call<List<Washer>>, response: Response<List<Washer>>) {
+                if (response.isSuccessful) {
+                    Log.d("WasherList", response.body().toString())
+                    val fetchedList = response.body()
+                    fetchedList?.forEach {
+                        allNum+=1
+                        if (it.washerstatus == "사용 가능"){
+                            availableNum+=1
+                        }
+
+                        Log.d("num","( ${availableNum} / ${allNum} )" )
+                    }
+                    Log.d("num","( ${availableNum} / ${allNum} )" )
+                    val howmany = findViewById<TextView>(R.id.howManyAvailableWasher)
+                    howmany.text = "( ${availableNum} / ${allNum} )"
+                } else {
+                    // 실패 시 처리
+                }
+            }
+
+            override fun onFailure(call: Call<List<Washer>>, t: Throwable) {
+                Log.e("WasherList", "Failed: ${t.message}")
+            }
+        })
     }
 }

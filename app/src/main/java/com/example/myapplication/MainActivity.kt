@@ -1,7 +1,9 @@
 package com.example.myapplication
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -46,6 +48,27 @@ class MainActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.message == true) {
                         Toast.makeText(this@MainActivity, "Login Successful", Toast.LENGTH_SHORT).show()
+
+                        userid?.let {
+                            RetrofitClient.instance.getUserDetails(it)
+                                .enqueue(object : Callback<User> {
+                                    override fun onResponse(call: Call<User>, response: Response<User>) {
+                                        if (response.isSuccessful) {
+                                            response.body()?.let { user ->
+                                                publicDorm = user.dormitory
+                                                Log.d("publicDorm from login", publicDorm)
+                                            }
+                                        } else {
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<User>, t: Throwable) {
+                                    }
+
+                                })
+                        }
+
+
                         val intent = Intent(this@MainActivity, NavigateActivity::class.java)
                         intent.putExtra("userid", userid)
                         startActivity(intent)
