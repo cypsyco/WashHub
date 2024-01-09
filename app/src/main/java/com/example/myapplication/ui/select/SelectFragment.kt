@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.NavigateActivity
@@ -44,8 +45,8 @@ class SelectFragment : Fragment() {
 //            toolbardorm.isClickable = true
 //        }
 
-        val buttonWasher = root.findViewById<Button>(R.id.button_washer)
-        val buttonDryer = root.findViewById<Button>(R.id.button_dryer)
+        val buttonWasher = root.findViewById<CardView>(R.id.select_washer)
+        val buttonDryer = root.findViewById<CardView>(R.id.select_dryer)
 
         buttonWasher.setOnClickListener {
 //            val navigateActivity = activity as? NavigateActivity
