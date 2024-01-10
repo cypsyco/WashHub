@@ -59,7 +59,7 @@ class SelectFragment : Fragment() {
         }
 
 
-        Log.d("publicDorm", publicDorm)
+        Log.d("Select publicDorm", publicDorm)
         call.enqueue(object : Callback<List<Washer>> {
             override fun onResponse(call: Call<List<Washer>>, response: Response<List<Washer>>) {
                 if (response.isSuccessful) {

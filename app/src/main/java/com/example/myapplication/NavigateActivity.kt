@@ -72,8 +72,6 @@ class NavigateActivity : AppCompatActivity() {
 
         val toolbardormText = intent.getStringExtra("toolbardormText")
         publicDorm = toolbardormText.toString()
-        howManyWashersAvailable()
-//        TODO("로그인 이후 첫 화면 전체 세탁기 기준 개수 세어짐")
         userid = intent.getStringExtra("userid")//?:"asdf"
 
         //사용자 정보 불러오기
@@ -94,6 +92,8 @@ class NavigateActivity : AppCompatActivity() {
                                 toolbardorm.text = dormitory
                                 publicDorm = dormitory as String
 
+                                howManyWashersAvailable()
+
                                 Log.d("publicDorm", publicDorm)
                                 val decodedBytes = Base64.decode(image, Base64.DEFAULT)
                                 val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.size)
@@ -107,7 +107,6 @@ class NavigateActivity : AppCompatActivity() {
 
 
                                 Log.d("responsesuccessful in SelectScreen", user.toString())
-                                Toast.makeText(this@NavigateActivity, username, Toast.LENGTH_SHORT).show()
 
                             }
                         } else {

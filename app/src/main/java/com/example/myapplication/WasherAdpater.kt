@@ -129,7 +129,7 @@ class WasherAdapter(private val washerList: List<Washer>, private val userid: St
                 }
                 "수리중" -> {
                     // 수리중일 때의 로직
-                    Toast.makeText(holder.itemView.context, "기계가 수리 중입니다. 다른 기계를 이용해 주세요.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(holder.itemView.context, "기계가 수리 중입니다.", Toast.LENGTH_SHORT).show()
                 }
                 "예약중" -> {
 //                    if (currentWasher.using == userid)

@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.message == true) {
-                        Toast.makeText(this@MainActivity, "Login Successful", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
 
                         userid?.let {
                             RetrofitClient.instance.getUserDetails(it)
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                         finish()
 
                     } else {
-                        Toast.makeText(this@MainActivity, "Login Failed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "로그인 실패", Toast.LENGTH_SHORT).show()
                     }
                 }
 
