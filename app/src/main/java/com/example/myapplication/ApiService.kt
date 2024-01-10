@@ -131,5 +131,5 @@ data class UserUpdateRequest(
     val username: String,
     val dormitory: String,
     val gender: String,
-    val image: String
+    val image: String?
 )
