@@ -28,9 +28,6 @@ import retrofit2.Response
 class SelectFragment : Fragment() {
 
     private var _binding: FragmentSelectBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -44,20 +41,14 @@ class SelectFragment : Fragment() {
         var availableNum = 0
 
         val navigateActivity = activity as? NavigateActivity
-//        val toolbardorm = navigateActivity?.getToolbarDorm()
-//        if (toolbardorm != null) {
-//            toolbardorm.setTextColor(Color.BLACK)
-//            toolbardorm.isClickable = true
-//        }
 
         val call: Call<List<Washer>> = when (publicDorm) {
             "사랑관" -> RetrofitClient.instance.getWashersDorm1()
             "소망관" -> RetrofitClient.instance.getWashersDorm2()
             "아름관" -> RetrofitClient.instance.getWashersDorm3()
             "나래관" -> RetrofitClient.instance.getWashersDorm4()
-            else -> RetrofitClient.instance.getWashers() // 기본값
+            else -> RetrofitClient.instance.getWashers()
         }
-
 
         Log.d("Select publicDorm", publicDorm)
         call.enqueue(object : Callback<List<Washer>> {
@@ -77,7 +68,6 @@ class SelectFragment : Fragment() {
                     val howmany = root.findViewById<TextView>(R.id.howManyAvailableWasher)
                     howmany.text = "( ${availableNum} / ${allNum} )"
                 } else {
-                    // 실패 시 처리
                 }
             }
 
@@ -90,7 +80,6 @@ class SelectFragment : Fragment() {
         val buttonDryer = root.findViewById<CardView>(R.id.select_dryer)
 
         buttonWasher.setOnClickListener {
-//            val navigateActivity = activity as? NavigateActivity
             val intent = Intent(requireContext(), WashersActivity::class.java)
             val toolbardormText = navigateActivity?.getToolbarDormText()
             val receivedIntent = activity?.intent
@@ -100,13 +89,9 @@ class SelectFragment : Fragment() {
             startActivity(intent)
         }
 
-
         buttonDryer.setOnClickListener {
             Toast.makeText(requireContext(), "Dryer clicked", Toast.LENGTH_SHORT).show()
         }
-
-        // 사용자 정보 불러오기
-
         return root
     }
 

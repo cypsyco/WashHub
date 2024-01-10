@@ -21,9 +21,6 @@ import retrofit2.Response
 class UsingFragment : Fragment() {
 
     private var _binding: FragmentUsingBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private var usingWasherList = mutableListOf<Washer>()
@@ -44,15 +41,6 @@ class UsingFragment : Fragment() {
         val navigateActivity = activity as? NavigateActivity
         val userid = navigateActivity?.getUserId()
 
-//        TODO("song: 상단바 기숙사 바꾸기 비활성화")
-//        val navigateActivity = activity as? NavigateActivity
-//        val toolbardorm = navigateActivity?.getToolbarDorm()
-//        if (toolbardorm != null) {
-//            toolbardorm.setTextColor(Color.TRANSPARENT)
-//            toolbardorm.
-//        }
-
-        // 'UsingFragment' 클래스 내부
         if (userid != null) {
             val call: Call<List<Washer>> = RetrofitClient.instance.getWashersByUser(userid)
 
@@ -67,7 +55,6 @@ class UsingFragment : Fragment() {
                         Log.d("UsingList", usingWasherList.toString())
                         recyclerView.adapter?.notifyDataSetChanged()
                     } else {
-                        // 실패 시 처리
                         Log.d("UsingList", "Response not successful")
                     }
                 }
@@ -83,7 +70,6 @@ class UsingFragment : Fragment() {
         val recyclerView2 = root.findViewById<RecyclerView>(R.id.using_dryers)
         val layoutManager2 = LinearLayoutManager(requireContext())
 
-        // 'UsingFragment' 클래스 내부
         if (userid != null) {
             val call2: Call<List<Dryer>> = RetrofitClient.instance.getDryersByUser(userid)
 
@@ -98,17 +84,13 @@ class UsingFragment : Fragment() {
                         Log.d("UsingList", usingDryerList.toString())
                         recyclerView.adapter?.notifyDataSetChanged()
                     } else {
-                        // 실패 시 처리
                         Log.d("UsingList", "Response not successful")
                     }
                 }
                 override fun onFailure(call: Call<List<Dryer>>, t: Throwable) {
-//                    TODO("Not yet implemented")
                 }
             })
         }
-
-        // TODO("?dummydata 넣을 건데 ㅁ초 안가는 거...")
         usingDryerList.add(Dryer(501, "1번 건조기", "사용중",50L,9700L))
         recyclerView2.layoutManager = layoutManager2
         recyclerView2.adapter = UsingDryerAdapter(usingDryerList)

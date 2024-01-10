@@ -46,7 +46,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var sGender: Switch
     private lateinit var sDormitory: Spinner
     private lateinit var idCheckBtn: Button
-    private var isUserIdChecked = false // ID 중복 확인 상태
+    private var isUserIdChecked = false
 
     var gender = "남자"
     var dorm = "사랑관"
@@ -68,19 +68,6 @@ class RegisterActivity : AppCompatActivity() {
         sGender = findViewById(R.id.switchGender)
         sDormitory = findViewById(R.id.spinnerDorm)
 
-//        val resourceId: Int = R.drawable.baseline_person_24 // 여기에 자신이 사용하려는 drawable의 리소스 ID를 넣어주세요
-//        val bitmap: Bitmap = BitmapFactory.decodeResource(resources, resourceId)
-//
-//        // 비트맵을 파일로 저장
-//        val file = File(this.filesDir, "image.jpg")
-//        val outputStream = FileOutputStream(file)
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-//        outputStream.flush()
-//        outputStream.close()
-//
-//        imageuri = FileProvider.getUriForFile(this, this.packageName + ".provider", file)
-
-        // toolbar
         val toolbartitle = findViewById<TextView>(R.id.toolBarTitle)
         toolbartitle.text = "회원가입"
         val toolbardorm = findViewById<TextView>(R.id.toolBarDorm)
@@ -90,7 +77,6 @@ class RegisterActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        //password
         val showbtn = findViewById<ImageButton>(R.id.showbutton)
         showbtn.tag = "0"
         showbtn.setOnClickListener {
@@ -112,7 +98,6 @@ class RegisterActivity : AppCompatActivity() {
             etPassword.setSelection(etPassword.text!!.length)
         }
 
-        // profileImage
         imageView.setOnClickListener {
             openGalleryForImage()
         }
@@ -126,7 +111,6 @@ class RegisterActivity : AppCompatActivity() {
         newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         sDormitory.adapter = newAdapter
 
-        // gender
         sGender.setOnCheckedChangeListener{CompoundButton, onSwitch ->
             if (onSwitch){
                 gender = "남자"
@@ -144,7 +128,6 @@ class RegisterActivity : AppCompatActivity() {
             Log.d("gender",gender)
         }
 
-        // dorm
         sDormitory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -154,16 +137,13 @@ class RegisterActivity : AppCompatActivity() {
             ) {
                 val selectedItem = parent?.getItemAtPosition(position).toString()
                 dorm = selectedItem
-                // 선택된 아이템으로 원하는 작업을 수행합니다.
                 Log.d("Selected item", selectedItem)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // 아무것도 선택되지 않았을 때 수행할 작업을 여기에 구현할 수 있습니다.
             }
         }
 
-        //register
         val buttonRegister = findViewById<Button>(R.id.buttonRegister)
         buttonRegister.setOnClickListener {
             registerUser()
@@ -174,7 +154,7 @@ class RegisterActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish() // 현재 액티비티를 종료하여 뒤로가기와 동일한 효과
+                finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -196,7 +176,6 @@ class RegisterActivity : AppCompatActivity() {
                 .load(imageuri)
                 .circleCrop()
                 .into(imageView)
-//            imageView.setImageURI(imageuri)
         }
     }
 
@@ -210,11 +189,6 @@ class RegisterActivity : AppCompatActivity() {
             encodeuriToBase64(imageuri!!)
         } else{
             null
-//            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.baseline_person_24)
-//            val outputStream = ByteArrayOutputStream()
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-//            val imageBytes = outputStream.toByteArray()
-//            Base64.encodeToString(imageBytes, Base64.DEFAULT)
         }
 
         if (userid.isEmpty() || password.isEmpty() || username.isEmpty()) {

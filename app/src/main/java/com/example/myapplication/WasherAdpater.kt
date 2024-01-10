@@ -43,11 +43,6 @@ class WasherAdapter(private val washerList: List<Washer>, private val userid: St
         val currentWasher = washerList[position]
         holder.washername.text = currentWasher.washername
         holder.washerId = currentWasher.id
-
-//        val startTime: Long = System.currentTimeMillis()
-//        val setTime = 3600000L
-//        val userid =
-
         holder.btnAction.text = currentWasher.washerstatus
 
         if (currentWasher.washerstatus == "사용중") {
@@ -114,7 +109,6 @@ class WasherAdapter(private val washerList: List<Washer>, private val userid: St
         holder.btnAction.setOnClickListener {
             when (currentWasher.washerstatus) {
                 "사용 가능" -> {
-                    // 사용 가능일 때의 로직
                     val intent = Intent(holder.itemView.context, TimeSetActivity::class.java)
                     intent.putExtra("washername",currentWasher.washername)
                     intent.putExtra("washerid", currentWasher.id)
@@ -124,22 +118,15 @@ class WasherAdapter(private val washerList: List<Washer>, private val userid: St
                 }
                 "사용중" -> {
                     reserveDialog(holder.itemView.context, currentWasher.washername, currentWasher.id, userid)
-                    // 사용중일 때의 로직
-                    //Toast.makeText(holder.itemView.context, "기계가 사용 중입니다.", Toast.LENGTH_SHORT).show()
                 }
                 "수리중" -> {
-                    // 수리중일 때의 로직
                     Toast.makeText(holder.itemView.context, "기계가 수리 중입니다.", Toast.LENGTH_SHORT).show()
                 }
                 "예약중" -> {
-//                    if (currentWasher.using == userid)
-//                    TODO("세탁기 db에 사용중인 사람 아이디 넣고 조건문 처리하기")
                     reserveDialog(holder.itemView.context, currentWasher.washername, currentWasher.id, userid)
-                    // 예약중일 때의 로직
                     Toast.makeText(holder.itemView.context, "기계가 예약되어 있습니다.", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
-                    // 그 외의 경우
                     Toast.makeText(holder.itemView.context, "상태를 확인할 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -162,7 +149,6 @@ class WasherAdapter(private val washerList: List<Washer>, private val userid: St
 
         val reservedlist = mutableListOf<String>()
 
-        // 예약 목록을 불러와 reservedlist에 추가
         RetrofitClient.instance.getWasherReservations(washerId)
             .enqueue(object : Callback<List<String>> {
                 override fun onResponse(
@@ -222,7 +208,6 @@ class WasherAdapter(private val washerList: List<Washer>, private val userid: St
                             })
                         Toast.makeText(context, "예약이 성공적으로 업데이트되었습니다.", Toast.LENGTH_SHORT).show()
                     } else {
-                        // 예약이 이미 존재하는 경우
                         Toast.makeText(context, "이미 예약한 세탁기가 있습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }

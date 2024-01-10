@@ -34,8 +34,6 @@ class ReservedFragment : Fragment() {
 
     private var _binding: FragmentReservedBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private var rsvForWasherList = mutableListOf<String>()
@@ -48,13 +46,6 @@ class ReservedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        rsvForWasherList.add("가영")
-//        rsvForWasherList.add("firstname")
-//        rsvForWasherList.add("나영")
-//
-//        rsvForDryerList.add("firstname")
-//        rsvForDryerList.add("다영")
-//        rsvForDryerList.add("라영")
 
         _binding = FragmentReservedBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -81,8 +72,6 @@ class ReservedFragment : Fragment() {
         } ?: run {
         }
 
-        //////////////////////////////////////////////////////
-
         val washerrecyclerView = root.findViewById<RecyclerView>(R.id.reserved_people_for_washer)
         washerrecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -93,10 +82,6 @@ class ReservedFragment : Fragment() {
         val washertexts = root.findViewById<LinearLayout>(R.id.rsvWasherTexts)
         val washername2 = root.findViewById<TextView>(R.id.rsvWasherName2)
         var washerid:Int? = null
-
-
-
-
 
         val washerCancelBtn = root.findViewById<TextView>(R.id.washerClearbtn)
         washerCancelBtn.setOnClickListener{
@@ -115,14 +100,6 @@ class ReservedFragment : Fragment() {
                             washerdorm.visibility = View.VISIBLE
                             washerremaintime.visibility = View.VISIBLE
 
-//                            washername2.text = " - "
-//                            Log.d()
-//                            if(rsvForWasherList.size>0 && rsvForWasherList[0] == username){
-//                                val scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down)
-//                                washerBtn.animation = scaleDown
-//                                scaleDown.start()
-//                                canUse = false
-//                            }
                             Log.d("canUse", canUse.toString())
                             if(canUse){
                                 val scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down)
@@ -134,31 +111,27 @@ class ReservedFragment : Fragment() {
                         }
 
                         override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-//                            TODO("Not yet implemented")
                         }
 
                     })
             }
             isCanceled = true
             rsvForWasherList.clear()
+
+            washerrecyclerView.visibility = View.INVISIBLE
         }
 
-        //write code here
         userid?.let { userId ->
-            // 사용자가 예약한 세탁기의 모든 정보 조회
             RetrofitClient.instance.getWasherReservationsByUser(userId)
                 .enqueue(object : Callback<List<Washer>> {
                     override fun onResponse(call: Call<List<Washer>>, response: Response<List<Washer>>) {
                         if (response.isSuccessful) {
-                            // 성공적으로 데이터를 받아온 경우
                             response.body()?.forEach { washer ->
                                 Log.d("ReservedFragment", "Reserved Washers: $washer")
                                 washerid = washer.id
                                 washername.text = washer.washername
                                 washerdorm.text = washer.dorm
                                 washerremaintime.text = ""
-
-
 
                                 if (washer.washerstatus == "사용중") {
                                     val remainingTime = washer.starttime + washer.settime - System.currentTimeMillis()
@@ -200,10 +173,7 @@ class ReservedFragment : Fragment() {
                                                 fade_in.start()
                                                 washertexts.visibility = View.VISIBLE
 
-//                                                scale_anim.start()
-
                                             }
-                                            // Add any additional code to handle the finish event
                                         }
                                     }
                                     timer.start()
@@ -211,16 +181,12 @@ class ReservedFragment : Fragment() {
                                     washerremaintime.text = ""
                                 }
 
-
-
-
                                 Log.d("washerid",washerid.toString())
                                 washerid?.let {
                                     RetrofitClient.instance.getUsernamesByWasher(it)
                                         .enqueue(object : Callback<List<String>> {
                                             override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
                                                 if (response.isSuccessful) {
-                                                    // 성공적으로 데이터를 받아온 경우
                                                     rsvForWasherList.clear()
                                                     response.body()?.let { usernames ->
                                                         rsvForWasherList = usernames.toMutableList()
@@ -245,13 +211,11 @@ class ReservedFragment : Fragment() {
                                                         washertexts.visibility = View.VISIBLE
                                                     }
                                                 } else {
-                                                    // 서버로부터 에러 응답을 받은 경우
                                                     Log.e("ReservedFragment", "Error: ${response.errorBody()?.string()}")
                                                 }
                                             }
 
                                             override fun onFailure(call: Call<List<String>>, t: Throwable) {
-                                                // 네트워크 오류 또는 요청 실패
                                                 Log.e("ReservedFragment", "Failed to fetch usernames for washer", t)
                                             }
                                         })
@@ -260,27 +224,17 @@ class ReservedFragment : Fragment() {
                                 washerrecyclerView.adapter = adapter
                             }
                         } else {
-                            // 서버로부터 에러 응답을 받은 경우
                             Log.e("ReservedFragment", "Error: ${response.errorBody()?.string()}")
                         }
                     }
 
                     override fun onFailure(call: Call<List<Washer>>, t: Throwable) {
-                        // 네트워크 오류 또는 요청 실패
                         Log.e("ReservedFragment", "Failed to fetch reserved washers", t)
                     }
                 })
 
-//            val washerId = 1 // 예시로 1을 사용
-
             val useBtn = root.findViewById<TextView>(R.id.startUsingBtn)
             useBtn.setOnClickListener{
-//                canUse = false
-//                val scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down)
-//                washerBtn.animation = scaleDown
-//                scaleDown.start()
-//                washertexts.visibility = View.INVISIBLE
-
                 val intent = Intent(context, TimeSetActivity::class.java)
                 intent.putExtra("washername", washername.text)
                 intent.putExtra("washerid", washerid)
@@ -293,21 +247,15 @@ class ReservedFragment : Fragment() {
             }
         }
 
-
-        /////////////////////////////////////////
-
         val dryerrecyclerView = root.findViewById<RecyclerView>(R.id.reserved_people_for_dryer)
         dryerrecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val dryerBtn = root.findViewById<LinearLayout>(R.id.rsvDryerCard)
         dryerBtn.setOnClickListener{
-            // TODO{"song: 첫번째면 사용하기")
             Toast.makeText(requireContext(),"앞선 대기자가 있습니다.",Toast.LENGTH_SHORT).show()
         }
         val dryerCancelBtn = root.findViewById<TextView>(R.id.dryerClearbtn)
         dryerCancelBtn.setOnClickListener{
-            // TODO("song: 예약취소 누르면 리스트 초기화")
-            // TODO("jeon: reservation table에서 지우기")
         }
 
         val dadapter = userid?.let { ReservationAdapter(rsvForDryerList, it) }

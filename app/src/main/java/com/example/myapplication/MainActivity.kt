@@ -40,9 +40,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, RegisterActivity::class.java)
             startActivity(intent)
         }
-//        val scale_anim = AnimationUtils.loadAnimation(this@MainActivity, R.anim.reserve_btn_anim)
-//        logo.animation = scale_anim
-//        scale_anim.start()
     }
 
     private fun loginUser() {

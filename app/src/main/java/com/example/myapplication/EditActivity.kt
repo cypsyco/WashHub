@@ -89,9 +89,6 @@ class EditActivity : AppCompatActivity() {
                                     val decodedBytes = Base64.decode(image, Base64.DEFAULT)
                                     val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.size)
 
-//                                sideimg.setImageBitmap(decodedBitmap)
-
-                                    //Glide 호출까지 완료
                                     Glide.with(this@EditActivity)
                                         .load(decodedBitmap)
                                         .circleCrop()
@@ -120,7 +117,6 @@ class EditActivity : AppCompatActivity() {
             Toast.makeText(this, "User ID is null", Toast.LENGTH_SHORT).show()
         }
 
-        // toolbar
         val toolbartitle = findViewById<TextView>(R.id.toolBarTitle)
         toolbartitle.text = "회원정보수정"
         val toolbardorm = findViewById<TextView>(R.id.toolBarDorm)
@@ -130,7 +126,6 @@ class EditActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        //password
         val showbtn = findViewById<ImageButton>(R.id.sshowbutton)
         showbtn.tag = "0"
         showbtn.setOnClickListener {
@@ -172,7 +167,6 @@ class EditActivity : AppCompatActivity() {
             etPassword2.setSelection(etPassword2.text!!.length)
         }
 
-        // profileImage
         imageView.setOnClickListener {
             openGalleryForImage()
         }
@@ -187,7 +181,6 @@ class EditActivity : AppCompatActivity() {
             sDormitory.adapter = newAdapter
         }
 
-        // dorm
         sDormitory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -197,16 +190,13 @@ class EditActivity : AppCompatActivity() {
             ) {
                 val selectedItem = parent?.getItemAtPosition(position).toString()
                 dormitory = selectedItem
-                // 선택된 아이템으로 원하는 작업을 수행합니다.
                 Log.d("Selected item", selectedItem)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // 아무것도 선택되지 않았을 때 수행할 작업을 여기에 구현할 수 있습니다.
             }
         }
 
-        //register
         val buttonSave = findViewById<Button>(R.id.buttonSave)
         buttonSave.setOnClickListener {
             saveUser()
@@ -216,7 +206,7 @@ class EditActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish() // 현재 액티비티를 종료하여 뒤로가기와 동일한 효과
+                finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -267,7 +257,6 @@ class EditActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.message == true) {
                         Toast.makeText(this@EditActivity, "User info updated successfully", Toast.LENGTH_SHORT).show()
-                        // 이동 로직
                     } else {
                         Toast.makeText(this@EditActivity, "Failed to update user info", Toast.LENGTH_SHORT).show()
                     }

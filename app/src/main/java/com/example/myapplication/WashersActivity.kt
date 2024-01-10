@@ -61,7 +61,7 @@ class WashersActivity : AppCompatActivity() {
             "소망관" -> RetrofitClient.instance.getWashersDorm2()
             "아름관" -> RetrofitClient.instance.getWashersDorm3()
             "나래관" -> RetrofitClient.instance.getWashersDorm4()
-            else -> RetrofitClient.instance.getWashers() // 기본값
+            else -> RetrofitClient.instance.getWashers()
         }
 
         call.enqueue(object : Callback<List<Washer>> {
@@ -76,7 +76,6 @@ class WashersActivity : AppCompatActivity() {
                     }
                     Log.d("WasherList2", washerList.toString())
                 } else {
-                    // 실패 시 처리
                 }
             }
 
@@ -89,7 +88,6 @@ class WashersActivity : AppCompatActivity() {
             recyclerView.adapter =
                 toolbardormText?.let { WasherAdapter(washerList, nonNullUserId, it) }
         } ?: run {
-            // userid가 null인 경우의 처리
             Toast.makeText(this, "User ID is missing", Toast.LENGTH_SHORT).show()
         }
     }

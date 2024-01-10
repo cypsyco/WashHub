@@ -64,8 +64,7 @@ class NavigateActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = findViewById(R.id.nav_view)
 
-        val headerView = navView.getHeaderView(0) // 헤더 레이아웃 가져오기
-
+        val headerView = navView.getHeaderView(0)
         val sidename = headerView.findViewById<TextView>(R.id.sidename_tv)
         val sidedorm = headerView.findViewById<TextView>(R.id.sidedorm_tv)
         val sideimg = headerView.findViewById<CircleImageView>(R.id.headerimageView)
@@ -73,9 +72,8 @@ class NavigateActivity : AppCompatActivity() {
 
         val toolbardormText = intent.getStringExtra("toolbardormText")
         publicDorm = toolbardormText.toString()
-        userid = intent.getStringExtra("userid")//?:"asdf"
+        userid = intent.getStringExtra("userid")
 
-        //사용자 정보 불러오기
         userid?.let {
             RetrofitClient.instance.getUserDetails(it)
                 .enqueue(object : Callback<User> {
@@ -100,9 +98,6 @@ class NavigateActivity : AppCompatActivity() {
                                     val decodedBytes = Base64.decode(image, Base64.DEFAULT)
                                     val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.size)
 
-//                                sideimg.setImageBitmap(decodedBitmap)
-
-                                    //Glide 호출까지 완료
                                     Glide.with(this@NavigateActivity)
                                         .load(decodedBitmap)
                                         .circleCrop()
@@ -141,8 +136,6 @@ class NavigateActivity : AppCompatActivity() {
         Log.d("toolbardormText", "toolbar ${toolbardorm.text}")
 
         val navController = findNavController(R.id.nav_host_fragment_content_navigate)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_select, R.id.nav_using, R.id.nav_reserved
@@ -185,7 +178,6 @@ class NavigateActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.action_settings -> {
-                        // 메뉴 아이템 클릭 시 동작할 내용 작성
                         val newdorm = if (gender == "남자") "사랑관" else "아름관"
                         toolbardorm.text = newdorm
                         sidedorm.text = newdorm
@@ -193,11 +185,9 @@ class NavigateActivity : AppCompatActivity() {
                         howManyWashersAvailable()
 
                         Log.d("publicDorm", publicDorm)
-//                        TODO("{userid}의 기숙사 선택하는 걸로{toolbardorm.text} db dorm 업데이트")
                         true
                     }
                     R.id.action_settings2 -> {
-                        // 다른 메뉴 아이템에 대한 동작
                         val newdorm = if (gender == "남자") "소망관" else "나래관"
                         toolbardorm.text = newdorm
                         sidedorm.text = newdorm
@@ -205,10 +195,8 @@ class NavigateActivity : AppCompatActivity() {
                         howManyWashersAvailable()
 
                         Log.d("publicDorm", publicDorm)
-//                        TODO("{userid}의 기숙사 선택하는 걸로{toolbardorm.text} db dorm 업데이트")
                         true
                     }
-                    // 추가적인 메뉴 아이템 핸들링 가능
                     else -> false
                 }
             }
@@ -218,7 +206,6 @@ class NavigateActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // 이전에 있던 옵션 메뉴 제거
         menu.clear()
         return true
     }
@@ -250,7 +237,7 @@ class NavigateActivity : AppCompatActivity() {
             "소망관" -> RetrofitClient.instance.getWashersDorm2()
             "아름관" -> RetrofitClient.instance.getWashersDorm3()
             "나래관" -> RetrofitClient.instance.getWashersDorm4()
-            else -> RetrofitClient.instance.getWashers() // 기본값
+            else -> RetrofitClient.instance.getWashers()
         }
 
 
@@ -272,7 +259,6 @@ class NavigateActivity : AppCompatActivity() {
                     val howmany = findViewById<TextView>(R.id.howManyAvailableWasher)
                     howmany.text = "( ${availableNum} / ${allNum} )"
                 } else {
-                    // 실패 시 처리
                 }
             }
 
