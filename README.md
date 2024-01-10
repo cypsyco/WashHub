@@ -8,7 +8,8 @@
 
 ---
 
-![Main.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/5653668c-68f7-4229-ad60-bf5786c3fd02/Main.png)
+![Main](https://github.com/cypsyco/MadFacility/assets/137145628/214fe22c-b3ed-4cd1-9e77-c7a1ee683ae9)
+
 
 > 오늘 꼭 돌려야 할 빨래가 있지만, 공용 세탁기 자리가 없었던 경험 있으신가요? WashHub는 기숙사에서 지내는 학생들이 실시간으로 세탁기 사용 현황을 확인하고, 예약할 수 있도록 하는 서비스입니다.
 > 
@@ -34,8 +35,9 @@
     > **어플리케이션 로딩 애니메이션**
     > 
     
-    ![splash_infinite.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/0747bd71-a7d4-48c2-a0f4-c163208200c7/splash_infinite.gif)
     
+    ![splash](https://github.com/cypsyco/MadFacility/assets/137145628/33f9357b-d7dc-419e-b6dd-64b545c165c0)
+
     <Splash 동영상>
     
     어플리케이션을 처음 실행할 경우, 위와 같이 로딩 화면이 생성됩니다.
@@ -49,14 +51,16 @@
     > **Server와 DB 기반 로그인, 회원 가입 기능**
     > 
     
-    ![KakaoTalk_20240110_202223304.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/59e73150-e5f9-44a8-9e13-27dfa87b6067/KakaoTalk_20240110_202223304.jpg)
     
+    ![KakaoTalk_20240110_202223304](https://github.com/cypsyco/MadFacility/assets/137145628/f69bc0f9-811c-400d-8be4-0b0c09263e50)
+
     <로그인 화면>
     
     Node.js Server와 MySQL DB를 기반으로 회원 정보를 저장하고, 불러오는 부분입니다.
     
-    ![KakaoTalk_20240110_202223304_01.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/52a85232-2a6d-4b03-a81e-b27d68215e94/KakaoTalk_20240110_202223304_01.jpg)
     
+    ![KakaoTalk_20240110_202223304_08](https://github.com/cypsyco/MadFacility/assets/137145628/7f866cfb-6d57-47c1-9731-924143b927b3)
+
     <회원 가입 화면>
     
     **회원 가입 기본 기능**
@@ -78,8 +82,9 @@
     > **(성별에 따라) 세탁기를 이용할 기숙사 선택 가능**
     > 
     
-    ![KakaoTalk_20240110_202223304_05.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/7a54788b-b73c-4ce8-85c5-e8e826db953b/KakaoTalk_20240110_202223304_05.jpg)
     
+    ![KakaoTalk_20240110_202223304_06](https://github.com/cypsyco/MadFacility/assets/137145628/40c99e2f-d7a9-4a65-8494-b06b9fb4e73d)
+
     <세탁기 & 건조기 선택 화면>
     
     로그인이 성공하면, 세탁기와 건조기를 선택할 수 있는 화면으로 이동하게 됩니다.
@@ -98,8 +103,9 @@
     > **사용 가능, 사용 중, 예약 중, 수리 중 현황 공유**
     > 
     
-    ![KakaoTalk_20240110_202223304_09.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/6419e6d8-0498-4f3a-aa5b-daeafb7a4416/KakaoTalk_20240110_202223304_09.jpg)
     
+    ![KakaoTalk_20240110_202223304_09](https://github.com/cypsyco/MadFacility/assets/137145628/518f437a-1386-4498-a1d2-3673cbd92ca1)
+
     <세탁기 선택 화면>
     
     세탁기 선택 화면에서는 현재 세탁기의 현황을 확인한 후, 세탁기를 사용, 혹은 예약할 수 있습니다.
@@ -117,16 +123,19 @@
 1. **시간 설정 화면**
     
     
-    [동영상.mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/a6fa4d49-e58c-45bb-b5ed-76c042db8a8b/%EB%8F%99%EC%98%81%EC%83%81.mp4)
+   
     
+
+    https://github.com/cypsyco/MadFacility/assets/137145628/f848f309-4575-4b99-8647-428a2314e3b1
+
+
     <시간 설정 후 시작 동영상>
     
     “사용 가능” 세탁기를 선택하면 시간 설정 화면으로 이동하게 됩니다.
     
     사용할 시간을 설정한 이후, “사용 시작” 버튼을 누르면 세탁기 사용이 시작되고, 세탁기 선택 화면으로 이동하게 됩니다. 세탁기 선택 화면에서는 세탁이 완료될 때까지 남은 시간을 실시간으로 확인할 수 있습니다.
     
-    ![KakaoTalk_20240110_202223304_12.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/4868b87c-2f53-4375-b60f-22553f853ee3/KakaoTalk_20240110_202223304_12.jpg)
-    
+    ![KakaoTalk_20240110_202223304_12](https://github.com/cypsyco/MadFacility/assets/137145628/32a4ede2-e094-4cd0-a4f4-cda65bc1ff19)
     <세탁기 선택 화면 (세탁기 사용 시작 이후)>
     
 
@@ -135,8 +144,8 @@
 1. **예약 화면**
     
     
-    ![KakaoTalk_20240110_202223304_11.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/2703ec70-877d-47bf-8027-e1b17f7fe807/KakaoTalk_20240110_202223304_11.jpg)
     
+    ![KakaoTalk_20240110_202223304_11](https://github.com/cypsyco/MadFacility/assets/137145628/8b7ef5b3-917d-44cd-be90-fe7c4900c359)
     <예약 화면>
     
     “사용 중” 또는 “예약 중” 세탁기를 선택하면 시간 설정 화면으로 이동하게 됩니다.
@@ -155,8 +164,9 @@
 1. **프로필 화면**
     
     
-    ![KakaoTalk_20240110_202223304_16.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/1be97296-ead7-4a4b-b9b0-cbe76da06c7f/KakaoTalk_20240110_202223304_16.jpg)
     
+    ![KakaoTalk_20240110_202223304_16](https://github.com/cypsyco/MadFacility/assets/137145628/ecb317f5-8df9-4294-bba3-068ed5b660eb)
+
     <프로필 화면>
     
     로그인 이후, 상단 메뉴의 좌측 버튼을 누르면 프로필 화면으로 이동할 수 있습니다.
@@ -176,8 +186,9 @@
 1. **프로필 메뉴 - 사용 중인 세탁기**
     
     
-    ![KakaoTalk_20240110_202223304_15.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/71604c52-c77d-41cb-a24b-9acdd8b0ba12/KakaoTalk_20240110_202223304_15.jpg)
     
+    ![KakaoTalk_20240110_202223304_15](https://github.com/cypsyco/MadFacility/assets/137145628/733f417f-4b1a-4f0a-b60f-194e05092fd2)
+
     <사용 중인 세탁기 화면>
     
     프로필 메뉴에서 사용 중인 세탁기로 이동하면, 현재 사용자가 사용하고 있는 세탁기의 현황을 실시간으로 확인할 수 있습니다.
@@ -190,8 +201,8 @@
 1. **프로필 메뉴 - 예약 중인 세탁기**
     
     
-    ![KakaoTalk_20240110_202223304_14.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/cc7633fa-7974-42c9-9d72-d654c6279007/KakaoTalk_20240110_202223304_14.jpg)
-    
+    ![KakaoTalk_20240110_202223304_14](https://github.com/cypsyco/MadFacility/assets/137145628/006d8af7-e167-4fbf-a0ef-5b541068acde)
+
     <예약 중인 세탁기 화면>
     
     프로필 메뉴에서 예약 중인 세탁기로 이동하면, 현재 사용자가 예약하고 있는 세탁기의 현황을 실시간으로 확인할 수 있습니다.
@@ -199,9 +210,8 @@
     해당 세탁기의 현재 사용이 종료될 때까지 남은 시간을 확인할 수 있고, 사용자 본인의 예약 순번을 확인할 수 있습니다.
     
     사용자의 예약 순번이 1인 상태에서 세탁기 사용이 종료되면, 화면이 슬라이드 형식으로 바뀌게 되면서 아래와 같은 창이 나오게 됩니다.
-    
-    [동영상2.mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/bb52c460-8c4c-4088-a124-c94056663d47/%EB%8F%99%EC%98%81%EC%83%812.mp4)
-    
+
+    https://github.com/cypsyco/MadFacility/assets/137145628/67989b93-95b4-4d0a-b1f8-c2ee6dad1192
     <예약 알림 동영상>
     
     해당 창에서 “사용 시작” 버튼을 누르면, 즉시 시간 선택 화면으로 이동하게 되고, 바로 세탁기 사용을 시작할 수 있습니다.
@@ -212,8 +222,8 @@
 1. **프로필 메뉴 - 프로필 정보 수정**
     
     
-    ![KakaoTalk_20240110_202223304_13.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/fdedddf0-7106-40a3-a47a-1ea00c6e1b2b/KakaoTalk_20240110_202223304_13.jpg)
-    
+    ![KakaoTalk_20240110_202223304_13](https://github.com/cypsyco/MadFacility/assets/137145628/ca219fc5-f449-4071-a3dc-c18822d21e86)
+
     <회원 정보 수정 화면>
     
     프로필 메뉴에서 회원 정보 수정 화면으로 이동하면, 사용자의 정보를 수정할 수 있습니다.
