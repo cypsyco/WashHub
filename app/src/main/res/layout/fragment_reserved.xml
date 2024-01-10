@@ -61,32 +61,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="세탁기 사용이 가능합니다. \n지금 사용을 시작하시겠습니가? "
+                android:text="세탁기 사용이 가능합니다. \n지금 사용을 시작하시겠습니까? "
                 android:textSize="17sp"
+                android:textAlignment="center"
                 android:padding="50dp"/>
 
-            <LinearLayout
-                android:id="@+id/rsvWasherBtns"
+            <TextView
+                android:id="@+id/startUsingBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="예약취소"
-                    android:clickable="true"
-                    android:paddingStart="75dp"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="사용시작"
-                    android:textAlignment="viewEnd"
-                    android:clickable="true"
-                    android:paddingEnd="75dp"/>
-            </LinearLayout>
+                android:layout_weight="1"
+                android:text="사용시작"
+                android:textAlignment="center"
+                android:clickable="true"/>
 
         </LinearLayout>
 
@@ -128,7 +115,7 @@
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/reserved_people_for_washer"
-            android:layout_width="250dp"
+            android:layout_width="220dp"
             android:layout_height="match_parent"
             android:layout_weight="6"
             android:layout_gravity="center"

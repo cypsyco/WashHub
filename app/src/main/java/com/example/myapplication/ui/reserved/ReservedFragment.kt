@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.reserved
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -10,6 +11,7 @@ import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,10 +20,12 @@ import com.example.myapplication.NavigateActivity
 import com.example.myapplication.R
 import com.example.myapplication.ReservationAdapter
 import com.example.myapplication.RetrofitClient
+import com.example.myapplication.TimeSetActivity
 import com.example.myapplication.User
 import com.example.myapplication.UserId
 import com.example.myapplication.Washer
 import com.example.myapplication.databinding.FragmentReservedBinding
+import com.example.myapplication.publicDorm
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -58,6 +62,7 @@ class ReservedFragment : Fragment() {
         val navigateActivity = activity as? NavigateActivity
         val userid = navigateActivity?.getUserId()
         var username = ""
+        var canUse = false
 
         userid?.let {
             RetrofitClient.instance.getUserDetails(it)
@@ -85,13 +90,13 @@ class ReservedFragment : Fragment() {
         val washername = root.findViewById<TextView>(R.id.rsvWasherName)
         val washerdorm = root.findViewById<TextView>(R.id.rsvWasherdorm)
         val washerremaintime = root.findViewById<TextView>(R.id.rsvWasherTime)
+        val washertexts = root.findViewById<LinearLayout>(R.id.rsvWasherTexts)
+        val washername2 = root.findViewById<TextView>(R.id.rsvWasherName2)
         var washerid:Int? = null
 
-        val scale_up = AnimationUtils.loadAnimation(context, R.anim.scale_up)
-//        washerrecyclerView.visibility=View.INVISIBLE
-        washerBtn.animation = scale_up
 
-//        trans_anim.start()
+
+
 
         val washerCancelBtn = root.findViewById<TextView>(R.id.washerClearbtn)
         washerCancelBtn.setOnClickListener{
@@ -106,6 +111,26 @@ class ReservedFragment : Fragment() {
                             washername.text = " - "
                             washerdorm.text = ""
                             washerremaintime.text = ""
+                            washername.visibility = View.VISIBLE
+                            washerdorm.visibility = View.VISIBLE
+                            washerremaintime.visibility = View.VISIBLE
+
+//                            washername2.text = " - "
+//                            Log.d()
+//                            if(rsvForWasherList.size>0 && rsvForWasherList[0] == username){
+//                                val scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down)
+//                                washerBtn.animation = scaleDown
+//                                scaleDown.start()
+//                                canUse = false
+//                            }
+                            Log.d("canUse", canUse.toString())
+                            if(canUse){
+                                val scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down)
+                                washerBtn.animation = scaleDown
+                                scaleDown.start()
+                                canUse = false
+                            }
+                            washertexts.visibility = View.INVISIBLE
                         }
 
                         override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
@@ -134,6 +159,7 @@ class ReservedFragment : Fragment() {
                                 washerremaintime.text = ""
 
 
+
                                 if (washer.washerstatus == "사용중") {
                                     val remainingTime = washer.starttime + washer.settime - System.currentTimeMillis()
 
@@ -156,16 +182,22 @@ class ReservedFragment : Fragment() {
                                             washerremaintime.text = ""
 
                                             if (rsvForWasherList.size>0 && rsvForWasherList[0] == username){
+                                                canUse = true
                                                 Log.d("anim", "rsvForWasherList[0]: ${rsvForWasherList[0]} username: ${username}")
                                                 val scale_anim = AnimationUtils.loadAnimation(context, R.anim.scale_up)
                                                 washerBtn.animation = scale_anim
-                                                scale_anim.start()
-
-                                                val washertexts = root.findViewById<LinearLayout>(R.id.rsvWasherTexts)
 
                                                 washername.visibility = View.INVISIBLE
                                                 washerdorm.visibility = View.INVISIBLE
                                                 washerremaintime.visibility = View.INVISIBLE
+                                                scale_anim.start()
+
+                                                val washertexts = root.findViewById<LinearLayout>(R.id.rsvWasherTexts)
+                                                val washername2 = root.findViewById<TextView>(R.id.rsvWasherName2)
+                                                washername2.text = washer.washername
+                                                val fade_in = AnimationUtils.loadAnimation(context,R.anim.fade_in)
+                                                washertexts.animation = fade_in
+                                                fade_in.start()
                                                 washertexts.visibility = View.VISIBLE
 
 //                                                scale_anim.start()
@@ -197,6 +229,21 @@ class ReservedFragment : Fragment() {
                                                         Log.d("ReservedFragment", "Usernames for Washer $washerid: $usernames")
                                                         Log.d("rsvForWasherList", rsvForWasherList.toString())
                                                     }
+                                                    Log.d("canUse", washer.washerstatus.toString() +" " + rsvForWasherList.toString()+" "+username)
+                                                    if (washer.washerstatus == "예약중" && rsvForWasherList.size>0 && rsvForWasherList[0] == username){
+
+                                                        canUse = true
+                                                        val scale_anim = AnimationUtils.loadAnimation(context, R.anim.scale_up)
+                                                        washerBtn.animation = scale_anim
+
+                                                        washername.visibility = View.INVISIBLE
+                                                        washerdorm.visibility = View.INVISIBLE
+                                                        washerremaintime.visibility = View.INVISIBLE
+                                                        scale_anim.start()
+
+                                                        washername2.text = washer.washername
+                                                        washertexts.visibility = View.VISIBLE
+                                                    }
                                                 } else {
                                                     // 서버로부터 에러 응답을 받은 경우
                                                     Log.e("ReservedFragment", "Error: ${response.errorBody()?.string()}")
@@ -226,7 +273,21 @@ class ReservedFragment : Fragment() {
 
 //            val washerId = 1 // 예시로 1을 사용
 
+            val useBtn = root.findViewById<TextView>(R.id.startUsingBtn)
+            useBtn.setOnClickListener{
+//                canUse = false
+//                val scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down)
+//                washerBtn.animation = scaleDown
+//                scaleDown.start()
+//                washertexts.visibility = View.INVISIBLE
 
+                val intent = Intent(context, TimeSetActivity::class.java)
+                intent.putExtra("washername", washername.text)
+                intent.putExtra("washerid", washerid)
+                intent.putExtra("userid", userid)
+                intent.putExtra("toolbardormText", publicDorm)
+                context?.let { it1 -> ContextCompat.startActivity(it1, intent, null) }
+            }
         }
 
 
