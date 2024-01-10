@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -25,14 +27,19 @@ import android.widget.Toast
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.FileProvider
+import com.bumptech.glide.Glide
+import de.hdodenhof.circleimageview.CircleImageView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var imageView: ImageView
+    private lateinit var imageView: CircleImageView
     private lateinit var etUsername: EditText
     private lateinit var etID: EditText
     private lateinit var etPassword: EditText
@@ -47,7 +54,9 @@ class RegisterActivity : AppCompatActivity() {
     val maleDorms = arrayOf("사랑관", "소망관")
     val femaleDorms = arrayOf("아름관", "나래관")
 
-    @SuppressLint("MissingInflatedId")
+    private var imageuri: Uri? = null
+
+    @SuppressLint("MissingInflatedId", "WrongThread")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -58,6 +67,18 @@ class RegisterActivity : AppCompatActivity() {
         etPassword = findViewById(R.id.editTextPassword)
         sGender = findViewById(R.id.switchGender)
         sDormitory = findViewById(R.id.spinnerDorm)
+
+//        val resourceId: Int = R.drawable.baseline_person_24 // 여기에 자신이 사용하려는 drawable의 리소스 ID를 넣어주세요
+//        val bitmap: Bitmap = BitmapFactory.decodeResource(resources, resourceId)
+//
+//        // 비트맵을 파일로 저장
+//        val file = File(this.filesDir, "image.jpg")
+//        val outputStream = FileOutputStream(file)
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+//        outputStream.flush()
+//        outputStream.close()
+//
+//        imageuri = FileProvider.getUriForFile(this, this.packageName + ".provider", file)
 
         // toolbar
         val toolbartitle = findViewById<TextView>(R.id.toolBarTitle)
@@ -170,8 +191,12 @@ class RegisterActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK && requestCode == 1000) {
-            val imageUri = data?.data
-            imageView.setImageURI(imageUri)
+            imageuri = data?.data!!
+            Glide.with(this)
+                .load(imageuri)
+                .circleCrop()
+                .into(imageView)
+//            imageView.setImageURI(imageuri)
         }
     }
 
@@ -181,7 +206,16 @@ class RegisterActivity : AppCompatActivity() {
         val username = etUsername.text.toString().trim()
         val dormitory = dorm
         val gender = gender
-        val image = encodeImageToBase64(imageView)
+        val image = if(imageuri!=null) {
+            encodeuriToBase64(imageuri!!)
+        } else{
+            null
+//            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.baseline_person_24)
+//            val outputStream = ByteArrayOutputStream()
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+//            val imageBytes = outputStream.toByteArray()
+//            Base64.encodeToString(imageBytes, Base64.DEFAULT)
+        }
 
         if (userid.isEmpty() || password.isEmpty() || username.isEmpty()) {
             Toast.makeText(this, "모든 정보를 입력해주세요", Toast.LENGTH_SHORT).show()
@@ -222,6 +256,13 @@ class RegisterActivity : AppCompatActivity() {
         val imageBytes = outputStream.toByteArray()
 
         return Base64.encodeToString(imageBytes, Base64.DEFAULT)
+    }
+    private fun encodeuriToBase64(uri: Uri): String {
+        val inputStream = contentResolver.openInputStream(uri)
+        val bytes = inputStream?.readBytes()
+        inputStream?.close()
+
+        return Base64.encodeToString(bytes, Base64.DEFAULT)
     }
 
     private fun checkUserIdAvailability() {

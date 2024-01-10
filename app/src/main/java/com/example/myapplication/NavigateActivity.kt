@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
@@ -95,15 +96,24 @@ class NavigateActivity : AppCompatActivity() {
                                 howManyWashersAvailable()
 
                                 Log.d("publicDorm", publicDorm)
-                                val decodedBytes = Base64.decode(image, Base64.DEFAULT)
-                                val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.size)
+                                if (image != null){
+                                    val decodedBytes = Base64.decode(image, Base64.DEFAULT)
+                                    val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.size)
 
-                                sideimg.setImageBitmap(decodedBitmap)
+//                                sideimg.setImageBitmap(decodedBitmap)
 
-                                //Glide 호출까지 완료
-                                Glide.with(this@NavigateActivity)
-                                    .load(decodedBitmap)
-                                    .into(sideimg)
+                                    //Glide 호출까지 완료
+                                    Glide.with(this@NavigateActivity)
+                                        .load(decodedBitmap)
+                                        .circleCrop()
+                                        .into(sideimg)
+                                }else{
+                                    Glide.with(this@NavigateActivity)
+                                        .load(R.drawable.baseline_person_24)
+                                        .circleCrop()
+                                        .into(sideimg)
+                                }
+
 
 
                                 Log.d("responsesuccessful in SelectScreen", user.toString())

@@ -83,7 +83,7 @@ data class User(
     val username: String,
     val dormitory: String,
     val gender: String,
-    val image: String
+    val image: String?
 )
 data class ApiResponse(val message: Boolean, val UID: Int = -1)
 

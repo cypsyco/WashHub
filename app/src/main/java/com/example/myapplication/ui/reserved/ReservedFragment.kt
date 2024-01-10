@@ -284,7 +284,10 @@ class ReservedFragment : Fragment() {
                 val intent = Intent(context, TimeSetActivity::class.java)
                 intent.putExtra("washername", washername.text)
                 intent.putExtra("washerid", washerid)
+                Log.d("washerid", washerid.toString())
                 intent.putExtra("userid", userid)
+
+                Log.d("userid", userid.toString())
                 intent.putExtra("toolbardormText", publicDorm)
                 context?.let { it1 -> ContextCompat.startActivity(it1, intent, null) }
             }
