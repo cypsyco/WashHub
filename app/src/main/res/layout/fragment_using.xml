@@ -32,7 +32,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
             tools:listitem="@layout/using_item"
-            android:padding="15dp"/>
+            android:layout_margin="15dp"/>
     </LinearLayout>
 
     <View
@@ -69,7 +69,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
             tools:listitem="@layout/using_item"
-            android:padding="15dp"/>
+            android:layout_margin="15dp"/>
     </LinearLayout>
 
 </LinearLayout>
