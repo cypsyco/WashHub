@@ -211,7 +211,8 @@
     
     사용자의 예약 순번이 1인 상태에서 세탁기 사용이 종료되면, 화면이 슬라이드 형식으로 바뀌게 되면서 아래와 같은 창이 나오게 됩니다.
 
-    https://github.com/cypsyco/MadFacility/assets/137145628/67989b93-95b4-4d0a-b1f8-c2ee6dad1192
+
+   https://github.com/cypsyco/MadFacility/assets/137145628/5ddb0fd5-bf78-4cba-b5f9-5952f520805f
     <예약 알림 동영상>
     
     해당 창에서 “사용 시작” 버튼을 누르면, 즉시 시간 선택 화면으로 이동하게 되고, 바로 세탁기 사용을 시작할 수 있습니다.
