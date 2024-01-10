@@ -8,6 +8,7 @@ import android.util.Base64
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -24,6 +25,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet.Constraint
 import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ActivityNavigateBinding
 import de.hdodenhof.circleimageview.CircleImageView
@@ -47,6 +50,11 @@ class NavigateActivity : AppCompatActivity() {
 
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         super.onCreate(savedInstanceState)
 
         binding = ActivityNavigateBinding.inflate(layoutInflater)
@@ -69,7 +77,7 @@ class NavigateActivity : AppCompatActivity() {
         val sidedorm = headerView.findViewById<TextView>(R.id.sidedorm_tv)
         val sideimg = headerView.findViewById<CircleImageView>(R.id.headerimageView)
         val sideeditbtn = headerView.findViewById<ImageButton>(R.id.editBtn)
-        val logoutbtn = findViewById<TextView>(R.id.logoutBtn)
+        val logoutbtn = headerView.findViewById<TextView>(R.id.logoutBtn)
 
         val toolbardormText = intent.getStringExtra("toolbardormText")
         publicDorm = toolbardormText.toString()
