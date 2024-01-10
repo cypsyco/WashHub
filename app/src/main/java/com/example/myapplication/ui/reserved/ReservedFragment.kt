@@ -1,36 +1,27 @@
 package com.example.myapplication.ui.reserved
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.ApiResponse
-import com.example.myapplication.Dryer
 import com.example.myapplication.NavigateActivity
 import com.example.myapplication.R
 import com.example.myapplication.ReservationAdapter
-import com.example.myapplication.ReservationResponse
 import com.example.myapplication.RetrofitClient
 import com.example.myapplication.User
 import com.example.myapplication.UserId
 import com.example.myapplication.Washer
 import com.example.myapplication.databinding.FragmentReservedBinding
-import com.example.myapplication.publicDorm
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -90,15 +81,17 @@ class ReservedFragment : Fragment() {
         val washerrecyclerView = root.findViewById<RecyclerView>(R.id.reserved_people_for_washer)
         washerrecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        val washerBtn = root.findViewById<CardView>(R.id.rsvWasherCard)
+        val washerBtn = root.findViewById<LinearLayout>(R.id.rsvWasherCard)
         val washername = root.findViewById<TextView>(R.id.rsvWasherName)
         val washerdorm = root.findViewById<TextView>(R.id.rsvWasherdorm)
         val washerremaintime = root.findViewById<TextView>(R.id.rsvWasherTime)
         var washerid:Int? = null
 
-        val scale_anim = AnimationUtils.loadAnimation(context, R.anim.reserve_btn_anim)
-        washerBtn.animation = scale_anim
-        scale_anim.start()
+        val scale_up = AnimationUtils.loadAnimation(context, R.anim.scale_up)
+//        washerrecyclerView.visibility=View.INVISIBLE
+        washerBtn.animation = scale_up
+
+//        trans_anim.start()
 
         val washerCancelBtn = root.findViewById<TextView>(R.id.washerClearbtn)
         washerCancelBtn.setOnClickListener{
@@ -164,9 +157,18 @@ class ReservedFragment : Fragment() {
 
                                             if (rsvForWasherList.size>0 && rsvForWasherList[0] == username){
                                                 Log.d("anim", "rsvForWasherList[0]: ${rsvForWasherList[0]} username: ${username}")
-                                                val scale_anim = AnimationUtils.loadAnimation(context, R.anim.reserve_btn_anim)
+                                                val scale_anim = AnimationUtils.loadAnimation(context, R.anim.scale_up)
                                                 washerBtn.animation = scale_anim
                                                 scale_anim.start()
+
+                                                val washertexts = root.findViewById<LinearLayout>(R.id.rsvWasherTexts)
+
+                                                washername.visibility = View.INVISIBLE
+                                                washerdorm.visibility = View.INVISIBLE
+                                                washerremaintime.visibility = View.INVISIBLE
+                                                washertexts.visibility = View.VISIBLE
+
+//                                                scale_anim.start()
 
                                             }
                                             // Add any additional code to handle the finish event
