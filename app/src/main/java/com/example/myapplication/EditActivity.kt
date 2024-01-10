@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -49,6 +50,8 @@ class EditActivity : AppCompatActivity() {
     val maleDorms = arrayOf("사랑관", "소망관")
     val femaleDorms = arrayOf("아름관", "나래관")
 
+    private var imageuri: Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
@@ -60,6 +63,7 @@ class EditActivity : AppCompatActivity() {
         etPassword2 = findViewById(R.id.seditNewPassword)
         sGender = findViewById(R.id.savedGender)
         sDormitory = findViewById(R.id.sspinnerDorm)
+
 
         userid = intent.getStringExtra("userid")
 
@@ -79,6 +83,16 @@ class EditActivity : AppCompatActivity() {
                                 tvid.text = userid
                                 etUsername.hint = username
                                 sGender.text = gender
+
+                                if (gender == "남자"){
+                                    val newAdapter = ArrayAdapter(this@EditActivity,android.R.layout.simple_spinner_item, maleDorms)
+                                    newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                                    sDormitory.adapter = newAdapter
+                                }else if(gender == "여자"){
+                                    val newAdapter = ArrayAdapter(this@EditActivity,android.R.layout.simple_spinner_item, femaleDorms)
+                                    newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                                    sDormitory.adapter = newAdapter
+                                }
 
                                 if (dormitory == "사랑관" || dormitory == "아름관") {
                                     sDormitory.setSelection(0)
@@ -171,15 +185,7 @@ class EditActivity : AppCompatActivity() {
             openGalleryForImage()
         }
 
-        if (gender == "남자"){
-            val newAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, maleDorms)
-            newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            sDormitory.adapter = newAdapter
-        }else{
-            val newAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, femaleDorms)
-            newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            sDormitory.adapter = newAdapter
-        }
+
 
         sDormitory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -223,21 +229,29 @@ class EditActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK && requestCode == 1000) {
-            val imageUri = data?.data
-            imageView.setImageURI(imageUri)
+            imageuri = data?.data!!
+            Glide.with(this)
+                .load(imageuri)
+                .circleCrop()
+                .into(imageView)
+//            imageView.setImageURI(imageuri)
         }
     }
 
     private fun saveUser() {
         val userid = userid
-        val password = etPassword.text.toString().trim()?:""
+        val password = etPassword.text.toString().trim()
         val newpassword = etPassword2.text.toString().trim()
-        val username = etUsername.text.toString().trim()?:username
+        val username = etUsername.text.toString().trim()
         val dormitory = dormitory
         val gender = gender
-        val image = encodeImageToBase64(imageView)
+        val image = if(imageuri!=null) {
+            encodeuriToBase64(imageuri!!)
+        } else {
+            image
+        }
 
-        if (password.isEmpty()) {
+        if (newpassword.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "원래 비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
             return
         }
@@ -246,10 +260,10 @@ class EditActivity : AppCompatActivity() {
             userid = userid ?: "",
             currentPassword = password,
             newPassword = newpassword,
-            username = username ?: "",
+            username = if(username.isEmpty()){ etUsername.hint.toString() } else {username},
             dormitory = dormitory ?: "",
             gender = gender ?: "",
-            image = encodeImageToBase64(imageView)
+            image = image
         )
 
         RetrofitClient.instance.updateUser(updateRequest)
@@ -285,5 +299,12 @@ class EditActivity : AppCompatActivity() {
         val imageBytes = outputStream.toByteArray()
 
         return Base64.encodeToString(imageBytes, Base64.DEFAULT)
+    }
+    private fun encodeuriToBase64(uri: Uri): String {
+        val inputStream = contentResolver.openInputStream(uri)
+        val bytes = inputStream?.readBytes()
+        inputStream?.close()
+
+        return Base64.encodeToString(bytes, Base64.DEFAULT)
     }
 }
