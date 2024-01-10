@@ -27,7 +27,8 @@
         android:scaleType="centerCrop"
         app:civ_fill_color="@color/blue"
         android:src="@drawable/baseline_person_24"
-        android:tint="@color/grey"/>
+        android:tint="@color/grey"
+        android:elevation="30dp"/>
 <!--    <ImageView-->
 <!--        android:id="@+id/imageView"-->
 <!--        android:layout_width="200dp"-->

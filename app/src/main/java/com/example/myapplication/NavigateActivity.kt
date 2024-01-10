@@ -69,6 +69,7 @@ class NavigateActivity : AppCompatActivity() {
         val sidedorm = headerView.findViewById<TextView>(R.id.sidedorm_tv)
         val sideimg = headerView.findViewById<CircleImageView>(R.id.headerimageView)
         val sideeditbtn = headerView.findViewById<ImageButton>(R.id.editBtn)
+        val logoutbtn = findViewById<TextView>(R.id.logoutBtn)
 
         val toolbardormText = intent.getStringExtra("toolbardormText")
         publicDorm = toolbardormText.toString()
@@ -156,6 +157,12 @@ class NavigateActivity : AppCompatActivity() {
                 else -> getString(R.string.app_name)
             }
             title.text = navtitle
+        }
+
+        logoutbtn.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         sideeditbtn.setOnClickListener{

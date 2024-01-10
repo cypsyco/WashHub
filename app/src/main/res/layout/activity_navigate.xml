@@ -15,18 +15,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:paddingStart="15dp"
-        android:paddingEnd="20dp"
-        android:fitsSystemWindows="true"
-        android:background="@drawable/round_br_corner_background"
-        app:headerLayout="@layout/nav_header_navigate"
-        app:menu="@menu/activity_navigate_activiity_drawer"
-        app:itemBackground="@drawable/nav_item_background"
-        app:itemTextAppearance="@style/navItemFont"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:paddingStart="15dp"
+            android:paddingEnd="20dp"
+            android:fitsSystemWindows="true"
+            android:background="@drawable/sidebar"
+            app:headerLayout="@layout/nav_header_navigate"
+            app:menu="@menu/activity_navigate_activiity_drawer"
+            app:itemBackground="@drawable/nav_item_background"
+            app:itemTextAppearance="@style/navItemFont"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+        <TextView
+            android:id="@+id/logoutBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="로그아웃"
+            android:paddingRight="50dp"
+            android:paddingBottom="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="@id/nav_view"
+            android:clickable="true"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

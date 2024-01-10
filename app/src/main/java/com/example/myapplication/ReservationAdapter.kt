@@ -59,7 +59,7 @@ class ReservationAdapter(private val reservedList: List<String>, private val use
         holder.reservedusername.text = currentUser
 
         Log.d("username, currentuser", username+" "+currentUser)
-        if (currentUser.trim() == username?.trim() ?: " "){
+        if (currentUser.trim() == username){
             holder.itemView.findViewById<LinearLayout>(R.id.reservedItemCard)
             holder.itemView.setBackgroundColor(R.color.blue)
         }
