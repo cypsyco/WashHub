@@ -22,6 +22,7 @@ import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -84,13 +85,23 @@ class EditActivity : AppCompatActivity() {
                                 }else{
                                     sDormitory.setSelection(1)
                                 }
-                                val decodedBytes = Base64.decode(image, Base64.DEFAULT)
-                                val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.size)
+                                if (image != null){
+                                    val decodedBytes = Base64.decode(image, Base64.DEFAULT)
+                                    val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0 , decodedBytes.size)
 
-                                imageView.setImageBitmap(decodedBitmap)
-//                                Glide.with(this)
-//                                    .load(decodedBitmap)
-//                                    .into(sideimg)
+//                                sideimg.setImageBitmap(decodedBitmap)
+
+                                    //Glide 호출까지 완료
+                                    Glide.with(this@EditActivity)
+                                        .load(decodedBitmap)
+                                        .circleCrop()
+                                        .into(imageView)
+                                }else{
+                                    Glide.with(this@EditActivity)
+                                        .load(R.drawable.baseline_person_24)
+                                        .circleCrop()
+                                        .into(imageView)
+                                }
                                 Log.d("responsesuccessful in SelectScreen", user.toString())
                                 Toast.makeText(this@EditActivity, username, Toast.LENGTH_SHORT).show()
 

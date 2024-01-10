@@ -28,6 +28,15 @@
         app:civ_fill_color="@color/blue"
         android:src="@drawable/baseline_person_24"
         android:tint="@color/grey"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="200dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:src="@drawable/baseline_person_24"-->
+<!--        android:paddingBottom="30dp"-->
+<!--        android:layout_weight="1"/>-->
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

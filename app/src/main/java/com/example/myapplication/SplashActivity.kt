@@ -20,7 +20,7 @@ class SplashActivity : AppCompatActivity() {
         val splashView = findViewById<ImageView>(R.id.splash)
 
         Glide.with(this@SplashActivity)
-            .load(R.drawable.splash)
+            .load(R.drawable.washhub_splash)
             .into(splashView)
 
         val handler = Handler(Looper.getMainLooper())
