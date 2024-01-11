@@ -93,12 +93,6 @@ class ReservedFragment : Fragment() {
                             response: Response<ApiResponse>
                         ) {
                             rsvForWasherList.clear()
-                            washername.text = " - "
-                            washerdorm.text = ""
-                            washerremaintime.text = ""
-                            washername.visibility = View.VISIBLE
-                            washerdorm.visibility = View.VISIBLE
-                            washerremaintime.visibility = View.VISIBLE
 
                             Log.d("canUse", canUse.toString())
                             if(canUse){
@@ -107,6 +101,12 @@ class ReservedFragment : Fragment() {
                                 scaleDown.start()
                                 canUse = false
                             }
+                            washername.text = " - "
+                            washerdorm.text = ""
+                            washerremaintime.text = ""
+                            washername.visibility = View.VISIBLE
+                            washerdorm.visibility = View.VISIBLE
+                            washerremaintime.visibility = View.VISIBLE
                             washertexts.visibility = View.INVISIBLE
                         }
 
